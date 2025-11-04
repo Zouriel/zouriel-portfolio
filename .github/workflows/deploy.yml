@@ -17,6 +17,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,27 +33,20 @@ jobs:
 
       - name: Build (Angular)
         run: |
-          # Project site -> base-href must match repo name
+          # Project site, so set base-href to repo name
           npx ng build --configuration=production --base-href="/zouriel-portfolio/"
 
       - name: Locate build output
         id: out
         shell: bash
         run: |
-          # Finds dist/**/index.html, works for Angular 17/18/20 (browser/ variants too)
+          # Find the folder that contains index.html (Angular 17/18+ may use dist/<app>/browser)
           BUILD_DIR=$(find dist -type f -name index.html -printf '%h\n' | head -n1)
-          if [ -z "$BUILD_DIR" ]; then
-            echo "No build output found under dist/"
-            exit 1
-          fi
           echo "dir=$BUILD_DIR" >> "$GITHUB_OUTPUT"
           echo "Detected BUILD_DIR=$BUILD_DIR"
 
       - name: Add SPA fallback (404 -> index)
         run: cp "${{ steps.out.outputs.dir }}/index.html" "${{ steps.out.outputs.dir }}/404.html"
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
