@@ -33,7 +33,7 @@ jobs:
       - name: Build (Angular)
         run: |
           # Project site -> base-href must match repo name
-          npx ng build --configuration=production --base-href="/"
+          npx ng build --configuration=production --base-href="/portfolio/"
 
       - name: Locate build output
         id: out
