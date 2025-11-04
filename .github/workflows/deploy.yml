@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages (Angular)
+name: Build Angular & Upload to Pinata (IPFS)
 
 on:
   push:
@@ -7,17 +7,10 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-pin:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,38 +21,63 @@ jobs:
           node-version: "20"
           cache: "npm"
 
-      - name: Install dependencies
+      - name: Install deps
         run: npm ci
 
-      - name: Build (Angular)
+      - name: Build (Angular for root domain/IPFS)
         run: |
-          # Project site, so set base-href to repo name
-          npx ng build --configuration=production --base-href="/zouriel-portfolio/"
+          # IPFS serves at the root, so base-href should be "/"
+          npx ng build --configuration=production --base-href="/"
 
       - name: Locate build output
         id: out
         shell: bash
         run: |
-          # Find the folder that contains index.html (Angular 17/18+ may use dist/<app>/browser)
           BUILD_DIR=$(find dist -type f -name index.html -printf '%h\n' | head -n1)
+          if [ -z "$BUILD_DIR" ]; then
+            echo "No build output found under dist/"
+            exit 1
+          fi
           echo "dir=$BUILD_DIR" >> "$GITHUB_OUTPUT"
           echo "Detected BUILD_DIR=$BUILD_DIR"
 
-      - name: Add SPA fallback (404 -> index)
+      - name: Add SPA fallback (copy index -> 404 for router refresh)
         run: cp "${{ steps.out.outputs.dir }}/index.html" "${{ steps.out.outputs.dir }}/404.html"
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ${{ steps.out.outputs.dir }}
+      - name: Install Pinata CLI
+        run: npm i -g @pinata/cli
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Authenticate Pinata
+        env:
+          PINATA_JWT: ${{ secrets.PINATA_JWT }}
+        run: |
+          pinata auth set --jwt "$PINATA_JWT"
+          pinata whoami
+
+      - name: Upload dist/ to Pinata (as a directory)
+        id: pin
+        run: |
+          # Upload the built directory; disable extra wrapping so the CID points at the site root
+          CID=$(pinata upload "${{ steps.out.outputs.dir }}" --wrap-with-directory false --name "zouriel-portfolio-${{ github.sha }}" --json | jq -r '.cid // .IpfsHash // .cidV1')
+          if [ -z "$CID" ] || [ "$CID" = "null" ]; then
+            echo "Failed to parse CID from Pinata response"
+            exit 1
+          fi
+          echo "cid=$CID" >> "$GITHUB_OUTPUT"
+          echo "Pinned CID: $CID"
+
+      - name: Summarise deployment (CID + gateways)
+        run: |
+          echo "CID: ${{ steps.pin.outputs.cid }}"
+          echo "Public gateways (try any):"
+          echo " - https://gateway.pinata.cloud/ipfs/${{ steps.pin.outputs.cid }}/"
+          echo " - https://ipfs.io/ipfs/${{ steps.pin.outputs.cid }}/"
+          echo " - https://cloudflare-ipfs.com/ipfs/${{ steps.pin.outputs.cid }}/"
+
+      - name: Comment CID on commit
+        uses: peter-evans/commit-comment@v3
+        with:
+          body: |
+            ✅ Pinned to IPFS via Pinata.
+            **CID:** `${{ steps.pin.outputs.cid }}`
+            **Preview:** https://gateway.pinata.cloud/ipfs/${{ steps.pin.outputs.cid }}/
