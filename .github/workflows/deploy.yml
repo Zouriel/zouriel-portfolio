@@ -27,7 +27,7 @@ jobs:
       - name: Build (Angular for IPFS/root)
         run: |
           # Web3 hosting serves at the root; use base-href "/"
-          npx ng build --configuration=production --base-href="/"
+          npx ng build --configuration=production --base-href="./" --deploy-url="./"
 
       - name: Locate build output
         id: out
