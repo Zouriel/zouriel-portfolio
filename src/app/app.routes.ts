@@ -31,6 +31,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/education.page').then((m) => m.EducationPage),
   },
+  {
+    path: 'military',
+    title: 'Service · Zouriel',
+    loadComponent: () =>
+      import('./pages/military-page').then((m) => m.MilitaryPage),
+  },
 
   {
     path: '404',

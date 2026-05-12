@@ -64,7 +64,10 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
         <div class="role-row" reveal="up" [revealDelay]="700">
           <div class="role-row__pillRow">
             <span class="pill">Full-Stack Engineer</span>
-            <span class="pill">Marine Veteran</span>
+            <a class="pill pill--rank" routerLink="/military" data-magnetic title="MNDF Marine Corps">
+              <span class="rank-chev" aria-hidden="true"></span>
+              LCpl · Marine Veteran
+            </a>
             <span class="pill">Lecturer</span>
             <span class="pill">Athlete</span>
           </div>
@@ -79,7 +82,8 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
             <span class="bio__amp">&amp;</span>
             I build disciplined, cinematic software — production systems, classroom
             tools, and personal experiments — with the same precision I learned
-            in the Marines.
+            as a Lance Corporal in the
+            <a class="link-line" routerLink="/military">Maldives National Defense Force Marine Corps</a>.
           </p>
         </div>
 
@@ -334,6 +338,29 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
         border: 1px solid rgba(255, 255, 255, 0.12);
         background: rgba(255, 255, 255, 0.03);
         color: rgba(255, 255, 255, 0.7);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .pill--rank {
+        border-color: rgba(245, 158, 11, 0.35);
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(210, 48, 69, 0.06));
+        color: #fde68a;
+        transition: border-color 0.3s ease, background 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .pill--rank:hover {
+        border-color: rgba(245, 158, 11, 0.7);
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(210, 48, 69, 0.12));
+        transform: translateY(-1px);
+      }
+      .rank-chev {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 8px solid #f59e0b;
+        filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.7));
       }
       .role-row__scroll {
         font-size: 11px;
