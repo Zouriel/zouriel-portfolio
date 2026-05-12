@@ -4,42 +4,37 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    title: 'Home • Zouriel',
+    title: 'Zouriel · Mohamed Imdaah',
     loadComponent: () => import('./pages/home-page').then((m) => m.HomePage),
   },
   {
+    path: 'projects',
+    title: 'Works · Zouriel',
+    loadComponent: () =>
+      import('./pages/projects-page').then((m) => m.ProjectsPage),
+  },
+  {
     path: 'development',
-    title: 'Development • Zouriel',
+    title: 'Stack · Zouriel',
     loadComponent: () =>
       import('./pages/development-page').then((m) => m.DevelopmentPage),
   },
   {
     path: 'work',
-    title: 'Work Experience • Zouriel',
+    title: 'Experience · Zouriel',
     loadComponent: () =>
       import('./pages/work-experience').then((m) => m.WorkExperiencePage),
   },
   {
     path: 'academics',
-    title: 'Academic Experience • Zouriel',
+    title: 'Academic · Zouriel',
     loadComponent: () =>
       import('./pages/education.page').then((m) => m.EducationPage),
   },
-  {
-    path: 'military',
-    title: 'Military • Zouriel',
-    loadComponent: () => import('./pages/home-page').then((m) => m.HomePage),
-  },
-  {
-    path: 'athletics',
-    title: 'Athletic Achievements • Zouriel',
-    loadComponent: () => import('./pages/home-page').then((m) => m.HomePage),
-  },
 
-  // optional: a tidy 404
   {
     path: '404',
-    title: 'Not Found • Zouriel',
+    title: 'Not Found · Zouriel',
     loadComponent: () => import('./pages/home-page').then((m) => m.HomePage),
   },
   { path: '**', redirectTo: '404' },

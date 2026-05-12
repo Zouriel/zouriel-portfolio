@@ -45,24 +45,24 @@ export const devPageData: DevPageData = {
         { name: 'JavaScript', level: 'Advanced', years: 3 },
         { name: 'C#', level: 'Advanced', years: 2 },
         { name: 'SQL (T-SQL / Postgres SQL)', level: 'Advanced', years: 2 },
-        { name: 'PHP (Laravel)', level: 'Working', years: 0.5 },
+        { name: 'PHP (Laravel)', level: 'Advanced', note: 'national portal backend' },
         { name: 'Go (Gin)', level: 'Working', years: 0.5 },
       ],
     },
     {
       title: 'Front-End',
       items: [
-        { name: 'Angular', level: 'Advanced', years: 3, note: 'Angular 16–20' },
+        { name: 'Angular', level: 'Advanced', years: 3, note: 'Angular 16–20, SSR' },
+        { name: 'Next.js / React', level: 'Advanced', note: 'App Router, Auth.js' },
         { name: 'Tailwind CSS', level: 'Advanced' },
-        { name: 'Next.js / React', level: 'Working' },
       ],
     },
     {
       title: 'Back-End',
       items: [
+        { name: 'Laravel', level: 'Advanced', note: 'national-scale APIs' },
         { name: '.NET / ASP.NET', level: 'Advanced' },
-        { name: 'Node / Elysia', level: 'Working' },
-        { name: 'Laravel', level: 'Working' },
+        { name: 'Node / Express', level: 'Working' },
       ],
     },
     {

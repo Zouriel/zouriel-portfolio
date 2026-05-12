@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostBinding,
   ViewChild,
   signal,
 } from '@angular/core';
@@ -10,252 +11,321 @@ import {
   ExperienceItem,
   workExperienceData,
 } from '../data/work-experience.data';
+import { RevealDirective } from '../directives/reveal.directive';
+import { SectionLabelComponent } from '../components/section-label.component';
 
 @Component({
   selector: 'app-work-experience',
   standalone: true,
-  imports: [CommonModule],
-  styles: [
-    `
-      .tab-rail {
-        position: relative;
-      }
-      .tab-btn {
-        padding: 0.5rem 1rem;
-        color: #9ca3af;
-        transition: color 0.2s ease;
-      }
-      .tab-btn.active,
-      .tab-btn:hover {
-        color: #fff;
-      }
-
-      .tab-slider {
-        position: absolute;
-        left: 0;
-        bottom: -1px;
-        height: 2px;
-        background: linear-gradient(90deg, #f59e0b, #fb7185);
-        border-radius: 9999px;
-        transition: transform 0.28s ease, width 0.28s ease;
-        will-change: transform, width;
-      }
-
-      @keyframes fadeSlideIn {
-        from {
-          opacity: 0;
-          transform: translateY(8px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes popDot {
-        0% {
-          transform: scale(0.6);
-          opacity: 0.4;
-        }
-        60% {
-          transform: scale(1.15);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-      .enter-list {
-        animation: fadeSlideIn 0.28s ease both;
-      }
-      .enter-item {
-        animation: fadeSlideIn 0.32s ease both;
-      }
-      .enter-dot {
-        animation: popDot 0.36s cubic-bezier(0.2, 0.9, 0.2, 1) both;
-      }
-    `,
-  ],
+  imports: [CommonModule, RevealDirective, SectionLabelComponent],
   template: `
-    <section class="relative min-h-screen w-full px-4 py-16">
-      <div class="mx-auto w-full max-w-5xl space-y-10">
-        <!-- Header -->
-        <header
-          class="rounded-3xl border border-white/10 bg-linear-to-br from-white/10 to-white/5
-                 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.35)]
-                 px-6 py-8 sm:px-10 sm:py-12"
-        >
-          <h1
-            class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white"
-          >
-            Experience
-          </h1>
-          <p class="mt-2 text-sm sm:text-base text-gray-300">
-            A journey through development, leadership, and teaching.
-          </p>
+    <section class="page">
+      <div class="wrap">
+        <app-section-label index="03" label="experience" />
 
-          <!-- Tabs -->
+        <h1 class="title font-display" reveal="up" [revealDelay]="80">
+          <span class="title__primary">Field</span>
+          <span class="title__accent">notes.</span>
+        </h1>
+
+        <p class="intro text-pretty" reveal="up" [revealDelay]="180">
+          A journey through development, leadership, and teaching — each
+          chapter sharpening the next.
+        </p>
+
+        <div class="tabs" #rail>
+          <button
+            #workTab
+            (click)="switch('work')"
+            class="tab font-mono"
+            [class.is-active]="activeTab() === 'work'"
+            data-magnetic
+          >
+            <span class="tab__num">[01]</span>
+            Industry
+          </button>
+          <button
+            #acadTab
+            (click)="switch('academic')"
+            class="tab font-mono"
+            [class.is-active]="activeTab() === 'academic'"
+            data-magnetic
+          >
+            <span class="tab__num">[02]</span>
+            Lecture
+          </button>
           <div
-            #rail
-            class="mt-6 tab-rail flex gap-4 border-b border-white/10 pb-2"
-          >
-            <button
-              #workTab
-              (click)="switch('work')"
-              class="tab-btn -mb-px"
-              [class.active]="activeTab() === 'work'"
-            >
-              Work
-            </button>
+            class="tab-slider"
+            [style.transform]="'translateX(' + sliderX() + 'px)'"
+            [style.width.px]="sliderW()"
+            aria-hidden="true"
+          ></div>
+        </div>
 
-            <button
-              #acadTab
-              (click)="switch('academic')"
-              class="tab-btn -mb-px"
-              [class.active]="activeTab() === 'academic'"
-            >
-              Academic
-            </button>
+        <div class="timeline">
+          <div class="timeline__rail" aria-hidden="true"></div>
 
-            <!-- underline slider -->
-            <div
-              class="tab-slider"
-              [style.transform]="'translateX(' + sliderX() + 'px)'"
-              [style.width.px]="sliderW()"
-            ></div>
-          </div>
-        </header>
-
-        <!-- Timeline -->
-        <section
-          class="rounded-3xl border border-white/10 bg-linear-to-br from-white/5 to-white/2
-                 backdrop-blur-xl shadow-[0_12px_50px_rgba(0,0,0,0.25)] p-6 sm:p-8"
-        >
           @if (activeTab() === 'work') {
-          <div class="relative pl-6 enter-list">
-            <div class="absolute left-3 top-0 bottom-0 w-px bg-white/10"></div>
-
             @for (e of workItems; track e.org; let i = $index) {
-            <article
-              class="relative mb-8 last:mb-0 enter-item"
-              [style.animationDelay.ms]="i * 60"
-            >
-              <div
-                class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-amber-500 shadow-[0_0_0_4px_rgba(251,191,36,0.15)] enter-dot"
-              ></div>
-
-              <div class="rounded-2xl border border-white/10 bg-white/3 p-4">
-                <div
-                  class="flex flex-wrap items-baseline justify-between gap-2"
-                >
+            <article class="entry" reveal="up" [revealDelay]="i * 80">
+              <div class="entry__dot" aria-hidden="true"></div>
+              <div class="entry__card">
+                <header class="entry__head">
                   <div>
-                    <h3 class="text-white font-semibold">{{ e.role }}</h3>
-                    <p class="text-gray-300/90">
+                    <h3 class="entry__role font-display">{{ e.role }}</h3>
+                    <p class="entry__org">
                       {{ e.org }}
-                      @if (e.location) { <span> · {{ e.location }}</span> }
+                      @if (e.location) { <span class="entry__loc"> · {{ e.location }}</span> }
                     </p>
                   </div>
-                  <p class="text-xs text-gray-400">{{ e.period }}</p>
-                </div>
+                  <p class="entry__period font-mono">{{ e.period }}</p>
+                </header>
 
-                <ul
-                  class="mt-3 list-disc list-inside text-gray-300/90 space-y-1"
-                >
+                @if (e.summary) {
+                <p class="entry__summary">{{ e.summary }}</p>
+                }
+
+                <ul class="entry__list">
                   @for (h of e.highlights; track h) {
                   <li>{{ h }}</li>
                   }
                 </ul>
 
                 @if (e.stack?.length) {
-                <div class="mt-3 flex flex-wrap gap-2">
+                <div class="entry__stack">
                   @for (s of e.stack; track s) {
-                  <span
-                    class="px-2.5 py-1 rounded-full border text-[11px] bg-white/10 border-white/10 text-white"
-                  >
-                    {{ s }}
-                  </span>
+                  <span class="chip font-mono">{{ s }}</span>
                   }
                 </div>
                 }
               </div>
             </article>
             }
-          </div>
           } @else {
-          <div class="relative pl-6 enter-list">
-            <div class="absolute left-3 top-0 bottom-0 w-px bg-white/10"></div>
-
             @for (e of academicItems; track e.org; let i = $index) {
-            <article
-              class="relative mb-8 last:mb-0 enter-item"
-              [style.animationDelay.ms]="i * 60"
-            >
-              <div
-                class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-amber-500 shadow-[0_0_0_4px_rgba(251,191,36,0.15)] enter-dot"
-              ></div>
-
-              <div class="rounded-2xl border border-white/10 bg-white/3 p-4">
-                <div
-                  class="flex flex-wrap items-baseline justify-between gap-2"
-                >
+            <article class="entry" reveal="up" [revealDelay]="i * 80">
+              <div class="entry__dot" aria-hidden="true"></div>
+              <div class="entry__card">
+                <header class="entry__head">
                   <div>
-                    <h3 class="text-white font-semibold">{{ e.role }}</h3>
-                    <p class="text-gray-300/90">
+                    <h3 class="entry__role font-display">{{ e.role }}</h3>
+                    <p class="entry__org">
                       {{ e.org }}
-                      @if (e.location) { <span> · {{ e.location }}</span> }
+                      @if (e.location) { <span class="entry__loc"> · {{ e.location }}</span> }
                     </p>
                   </div>
-                  <p class="text-xs text-gray-400">{{ e.period }}</p>
-                </div>
-
-                <ul
-                  class="mt-3 list-disc list-inside text-gray-300/90 space-y-1"
-                >
+                  <p class="entry__period font-mono">{{ e.period }}</p>
+                </header>
+                @if (e.summary) {
+                <p class="entry__summary">{{ e.summary }}</p>
+                }
+                <ul class="entry__list">
                   @for (h of e.highlights; track h) {
                   <li>{{ h }}</li>
                   }
                 </ul>
-
                 @if (e.stack?.length) {
-                <div class="mt-3 flex flex-wrap gap-2">
+                <div class="entry__stack">
                   @for (s of e.stack; track s) {
-                  <span
-                    class="px-2.5 py-1 rounded-full border text-[11px] bg-white/10 border-white/10 text-white"
-                  >
-                    {{ s }}
-                  </span>
+                  <span class="chip font-mono">{{ s }}</span>
                   }
                 </div>
                 }
               </div>
             </article>
             }
-          </div>
           }
-        </section>
+        </div>
       </div>
     </section>
   `,
+  styles: [
+    `
+      :host { display: block; }
+
+      .page { position: relative; min-height: 100vh; padding: 6rem 1.5rem 6rem; }
+      @media (min-width: 768px) { .page { padding: 6rem 4rem; } }
+      .wrap { max-width: 1100px; margin: 0 auto; }
+
+      .title {
+        margin-top: 1.5rem;
+        font-size: clamp(3rem, 11vw, 9rem);
+        font-weight: 700;
+        line-height: 0.92;
+        letter-spacing: -0.04em;
+      }
+      .title__primary { display: block; color: #fff; }
+      .title__accent {
+        display: block;
+        font-style: italic;
+        font-weight: 300;
+        background: linear-gradient(90deg, #d23045, #f59e0b, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        text-shadow: 0 0 30px rgba(245, 158, 11, .35);
+      }
+      .intro {
+        margin-top: 1.5rem;
+        max-width: 38rem;
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .tabs {
+        position: relative;
+        margin-top: 3.5rem;
+        display: flex;
+        gap: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding-bottom: 0.8rem;
+      }
+      .tab {
+        padding: 0.6rem 1rem;
+        font-size: 11px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.5);
+        transition: color 0.3s ease;
+        display: inline-flex;
+        gap: 0.6rem;
+        align-items: center;
+      }
+      .tab__num { color: rgba(255, 255, 255, 0.3); }
+      .tab:hover, .tab.is-active { color: #fff; }
+      .tab.is-active .tab__num { color: #f59e0b; }
+      .tab-slider {
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #d23045, #f59e0b, #fb7185);
+        border-radius: 9999px;
+        transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+          width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 0 18px rgba(245, 158, 11, 0.6);
+      }
+
+      .timeline {
+        position: relative;
+        margin-top: 3rem;
+        padding-left: 2rem;
+      }
+      .timeline__rail {
+        position: absolute;
+        left: 0.5rem;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: linear-gradient(180deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.12) 8%,
+          rgba(255, 255, 255, 0.12) 92%,
+          transparent 100%);
+      }
+
+      .entry { position: relative; margin-bottom: 2rem; }
+      .entry__dot {
+        position: absolute;
+        left: -1.65rem;
+        top: 1.6rem;
+        width: 12px;
+        height: 12px;
+        border-radius: 9999px;
+        background: #f59e0b;
+        box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.15),
+          0 0 18px rgba(245, 158, 11, 0.55);
+      }
+      .entry__card {
+        padding: 1.5rem;
+        border-radius: 1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.025);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        transition: border-color 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .entry__card:hover {
+        border-color: rgba(245, 158, 11, 0.3);
+        transform: translateX(2px);
+      }
+      .entry__head {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .entry__role {
+        font-size: 1.35rem;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: -0.02em;
+      }
+      .entry__org {
+        margin-top: 0.15rem;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .entry__loc { color: rgba(255, 255, 255, 0.4); }
+      .entry__period {
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .entry__summary {
+        margin-top: 0.9rem;
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.65);
+        line-height: 1.55;
+        font-style: italic;
+      }
+      .entry__list {
+        margin-top: 1rem;
+        padding-left: 1rem;
+        list-style: disc;
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 0.95rem;
+        line-height: 1.55;
+      }
+      .entry__list li::marker { color: #f59e0b; }
+      .entry__stack {
+        margin-top: 1.25rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .chip {
+        font-size: 10.5px;
+        padding: 0.3rem 0.65rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.7);
+      }
+    `,
+  ],
+  host: { class: 'route-enter block' },
 })
 export class WorkExperiencePage implements AfterViewInit {
+  @HostBinding('class.block') hostBlock = true;
+
   activeTab = signal<'work' | 'academic'>('work');
 
-  workItems: ExperienceItem[] = workExperienceData.filter(
-    (i) => i.type === 'work'
-  );
-  academicItems: ExperienceItem[] = workExperienceData.filter(
-    (i) => i.type === 'lecturer'
-  );
+  workItems: ExperienceItem[] = workExperienceData.filter((i) => i.type === 'work');
+  academicItems: ExperienceItem[] = workExperienceData.filter((i) => i.type === 'lecturer');
 
-  // slider state
   sliderX = signal(0);
   sliderW = signal(0);
 
-  // elements to measure
   @ViewChild('rail', { static: true }) rail!: ElementRef<HTMLDivElement>;
-  @ViewChild('workTab', { static: true })
-  workTab!: ElementRef<HTMLButtonElement>;
-  @ViewChild('acadTab', { static: true })
-  acadTab!: ElementRef<HTMLButtonElement>;
+  @ViewChild('workTab', { static: true }) workTab!: ElementRef<HTMLButtonElement>;
+  @ViewChild('acadTab', { static: true }) acadTab!: ElementRef<HTMLButtonElement>;
 
   private ro?: ResizeObserver;
 
@@ -273,7 +343,6 @@ export class WorkExperiencePage implements AfterViewInit {
   }
 
   measure = () => {
-    // position slider relative to the rail
     const railRect = this.rail.nativeElement.getBoundingClientRect();
     const tabRect = this.targetTabEl().getBoundingClientRect();
     this.sliderX.set(tabRect.left - railRect.left);
@@ -283,7 +352,6 @@ export class WorkExperiencePage implements AfterViewInit {
   switch(tab: 'work' | 'academic') {
     if (this.activeTab() !== tab) {
       this.activeTab.set(tab);
-      // wait for DOM to update then measure
       queueMicrotask(this.measure);
     }
   }

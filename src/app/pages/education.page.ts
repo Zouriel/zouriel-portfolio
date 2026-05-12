@@ -1,187 +1,213 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { educationPageData, EducationPageData } from '../data/education.data';
+import { RevealDirective } from '../directives/reveal.directive';
+import { SectionLabelComponent } from '../components/section-label.component';
 
 @Component({
   selector: 'app-education',
   standalone: true,
-  imports: [CommonModule],
-  styles: [
-    `
-      @keyframes fadeSlideIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .enter {
-        animation: fadeSlideIn 0.35s ease both;
-      }
-      .enter-s {
-        animation: fadeSlideIn 0.3s ease both;
-      }
-      .enter-xs {
-        animation: fadeSlideIn 0.24s ease both;
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .enter,
-        .enter-s,
-        .enter-xs {
-          animation: none !important;
-        }
-      }
-    `,
-  ],
+  imports: [CommonModule, RevealDirective, SectionLabelComponent],
   template: `
-    <section class="relative min-h-screen w-full px-4 py-16">
-      <div class="mx-auto w-full max-w-6xl space-y-10">
-        <!-- Header -->
-        <header
-          class="enter rounded-3xl border border-white/10 bg-linear-to-br from-white/8 to-white/3
-                 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.35)]
-                 px-6 py-8 sm:px-10 sm:py-12"
-        >
-          <h1
-            class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white"
-          >
-            {{ data.headline }}
-          </h1>
-          <p
-            class="mt-2 font-medium bg-clip-text text-transparent
-                    bg-linear-to-r from-amber-400 via-orange-500 to-rose-500"
-          >
-            {{ data.subhead }}
-          </p>
-          <p class="mt-4 max-w-3xl text-gray-300">
-            {{ data.summary }}
-          </p>
-        </header>
+    <section class="page">
+      <div class="wrap">
+        <app-section-label index="04" label="academic" />
 
-        <!-- Degrees / Formal Education -->
-        <section
-          class="enter-s rounded-3xl border border-white/10 bg-linear-to-br from-white/6 to-white/2
-                 backdrop-blur-xl shadow-[0_12px_50px_rgba(0,0,0,0.25)] p-6 sm:p-8"
-        >
-          <h2 class="text-xl font-semibold text-white/90">
-            Degrees & Formal Education
-          </h2>
+        <h1 class="title font-display" reveal="up" [revealDelay]="80">
+          <span class="title__primary">{{ data.headline }}</span>
+          <span class="title__accent">first class.</span>
+        </h1>
 
-          <div class="relative mt-6 pl-6">
-            <div class="absolute left-3 top-0 bottom-0 w-px bg-white/10"></div>
+        <p class="intro text-pretty" reveal="up" [revealDelay]="180">
+          {{ data.summary }}
+        </p>
 
-            @for (e of data.education; track e.degree; let i = $index) {
-            <article
-              class="relative mb-8 last:mb-0 enter-xs"
-              [style.animationDelay.ms]="i * 80"
-            >
-              <div
-                class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-amber-500
-                            shadow-[0_0_0_4px_rgba(251,191,36,0.15)]"
-              ></div>
+        <div class="timeline">
+          <div class="timeline__rail" aria-hidden="true"></div>
 
-              <div class="rounded-2xl border border-white/10 bg-white/3 p-4">
-                <div
-                  class="flex flex-wrap items-baseline justify-between gap-2"
-                >
-                  <div>
-                    <h3 class="text-white font-semibold">{{ e.degree }}</h3>
-                    <p class="text-gray-300/90">
-                      {{ e.institution }} @if (e.location) {
-                      <span> · {{ e.location }}</span> }
-                    </p>
-                  </div>
-                  <p class="text-xs text-gray-400">{{ e.period }}</p>
+          @for (e of data.education; track e.degree; let i = $index) {
+          <article class="entry" reveal="up" [revealDelay]="i * 90">
+            <div class="entry__dot" aria-hidden="true"></div>
+            <div class="entry__card">
+              <header class="entry__head">
+                <div>
+                  <h3 class="entry__role font-display">{{ e.degree }}</h3>
+                  <p class="entry__org">
+                    {{ e.institution }}
+                    @if (e.location) { <span class="entry__loc"> · {{ e.location }}</span> }
+                  </p>
                 </div>
+                <p class="entry__period font-mono">{{ e.period }}</p>
+              </header>
 
-                @if (e.result) {
-                <p class="mt-2 text-sm text-emerald-300/90">
-                  Result: {{ e.result }}
-                </p>
-                } @if (e.highlights?.length) {
-                <ul
-                  class="mt-3 list-disc list-inside text-gray-300/90 space-y-1"
-                >
-                  @for (h of e.highlights; track h) {
-                  <li>{{ h }}</li>
-                  }
-                </ul>
-                } @if (e.coursework?.length) {
-                <div class="mt-3">
-                  <h4
-                    class="text-[13px] uppercase tracking-wide text-gray-300/90"
-                  >
-                    Selected Coursework
-                  </h4>
-                  <div class="mt-2 flex flex-wrap gap-2">
-                    @for (c of e.coursework; track c) {
-                    <span
-                      class="px-2.5 py-1 rounded-full border text-[11px]
-                                       bg-white/10 border-white/10 text-white/90"
-                    >
-                      {{ c }}
-                    </span>
-                    }
-                  </div>
-                </div>
-                }
-              </div>
-            </article>
-            }
-          </div>
-        </section>
-
-        <!-- Certifications & Training -->
-        <!-- <section
-          class="enter-s rounded-3xl border border-white/10 bg-linear-to-br from-white/6 to-white/2
-                 backdrop-blur-xl shadow-[0_12px_50px_rgba(0,0,0,0.25)] p-6 sm:p-8"
-        >
-          <div class="flex items-center justify-between">
-            <h2 class="text-xl font-semibold text-white/90">
-              Certifications & Training
-            </h2>
-          </div>
-
-          <div class="mt-6 grid gap-6 md:grid-cols-2">
-            @for (c of data.certifications; track c.title; let i = $index) {
-            <article
-              class="rounded-2xl border border-white/10 bg-white/3 p-4 enter-xs"
-              [style.animationDelay.ms]="i * 80"
-            >
-              <div class="flex items-baseline justify-between gap-2">
-                <h3 class="text-white font-semibold">
-                  {{ c.title }}
-                  @if (c.category) {
-                  <span class="ml-2 text-xs text-white/60"
-                    >({{ c.category }})</span
-                  >
-                  }
-                </h3>
-                <p class="text-xs text-gray-400">{{ c.date }}</p>
-              </div>
-              <p class="text-gray-300/90">
-                {{ c.issuer }} @if (c.location) {
-                <span> · {{ c.location }}</span> }
+              @if (e.result) {
+              <p class="entry__result">
+                <span class="dot">●</span>
+                Result: {{ e.result }}
               </p>
-
-              @if (c.notes?.length) {
-              <ul class="mt-2 list-disc list-inside text-gray-300/90 space-y-1">
-                @for (n of c.notes; track n) {
-                <li>{{ n }}</li>
+              }
+              @if (e.highlights?.length) {
+              <ul class="entry__list">
+                @for (h of e.highlights; track h) {
+                <li>{{ h }}</li>
                 }
               </ul>
               }
-            </article>
-            }
-          </div>
-        </section> -->
+              @if (e.coursework?.length) {
+              <div class="entry__cw">
+                <h4 class="entry__cw-h font-mono">// selected coursework</h4>
+                <div class="entry__chips">
+                  @for (c of e.coursework; track c) {
+                  <span class="chip font-mono">{{ c }}</span>
+                  }
+                </div>
+              </div>
+              }
+            </div>
+          </article>
+          }
+        </div>
       </div>
     </section>
   `,
+  styles: [
+    `
+      :host { display: block; }
+      .page { position: relative; min-height: 100vh; padding: 6rem 1.5rem 6rem; }
+      @media (min-width: 768px) { .page { padding: 6rem 4rem; } }
+      .wrap { max-width: 1100px; margin: 0 auto; }
+
+      .title {
+        margin-top: 1.5rem;
+        font-size: clamp(3rem, 11vw, 9rem);
+        font-weight: 700;
+        line-height: 0.92;
+        letter-spacing: -0.04em;
+      }
+      .title__primary { display: block; color: #fff; }
+      .title__accent {
+        display: block;
+        font-style: italic;
+        font-weight: 300;
+        font-size: 0.6em;
+        background: linear-gradient(90deg, #d23045, #f59e0b, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        text-shadow: 0 0 30px rgba(245, 158, 11, .35);
+      }
+      .intro {
+        margin-top: 1.5rem;
+        max-width: 38rem;
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .timeline {
+        position: relative;
+        margin-top: 4rem;
+        padding-left: 2rem;
+      }
+      .timeline__rail {
+        position: absolute;
+        left: 0.5rem; top: 0; bottom: 0;
+        width: 1px;
+        background: linear-gradient(180deg,
+          transparent 0%, rgba(255,255,255,.12) 8%,
+          rgba(255,255,255,.12) 92%, transparent 100%);
+      }
+      .entry { position: relative; margin-bottom: 2rem; }
+      .entry__dot {
+        position: absolute;
+        left: -1.65rem; top: 1.6rem;
+        width: 12px; height: 12px;
+        border-radius: 9999px;
+        background: #f59e0b;
+        box-shadow: 0 0 0 5px rgba(245, 158, 11, .15),
+          0 0 18px rgba(245, 158, 11, .55);
+      }
+      .entry__card {
+        padding: 1.5rem;
+        border-radius: 1.25rem;
+        border: 1px solid rgba(255, 255, 255, .08);
+        background: rgba(255, 255, 255, .025);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        transition: border-color 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .entry__card:hover {
+        border-color: rgba(245, 158, 11, 0.3);
+        transform: translateX(2px);
+      }
+      .entry__head {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .entry__role {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: -0.02em;
+      }
+      .entry__org {
+        margin-top: 0.15rem;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, .7);
+      }
+      .entry__loc { color: rgba(255, 255, 255, .4); }
+      .entry__period {
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .4);
+      }
+      .entry__result {
+        margin-top: 0.85rem;
+        color: #6ee7b7;
+        font-size: 0.92rem;
+        display: inline-flex; gap: 0.5rem; align-items: center;
+      }
+      .entry__result .dot { color: #34d399; }
+      .entry__list {
+        margin-top: 1rem;
+        padding-left: 1rem;
+        list-style: disc;
+        display: flex; flex-direction: column;
+        gap: 0.45rem;
+        color: rgba(255, 255, 255, .78);
+        font-size: 0.95rem;
+      }
+      .entry__list li::marker { color: #f59e0b; }
+      .entry__cw { margin-top: 1.25rem; }
+      .entry__cw-h {
+        font-size: 10.5px;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .4);
+      }
+      .entry__chips {
+        margin-top: 0.65rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .chip {
+        font-size: 10.5px;
+        padding: 0.3rem 0.65rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, .08);
+        background: rgba(255, 255, 255, .04);
+        color: rgba(255, 255, 255, .8);
+      }
+    `,
+  ],
+  host: { class: 'route-enter block' },
 })
 export class EducationPage {
+  @HostBinding('class.block') hostBlock = true;
   data: EducationPageData = educationPageData;
 }
