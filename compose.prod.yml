@@ -1,0 +1,13 @@
+name: portfolio
+
+services:
+  frontend:
+    build:
+      context: .
+    restart: unless-stopped
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
