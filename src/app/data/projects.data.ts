@@ -138,8 +138,8 @@ export const projects: Project[] = [
     name: 'zouriel.dev',
     tagline: 'This portfolio.',
     description:
-      'The site you are reading. Angular 20, Tailwind v4, hand-rolled canvas constellations, magnetic cursor, scroll-driven cinema. No framework crutch — taste is the system.',
-    stack: ['Angular 20', 'Tailwind v4', 'Canvas', 'Web Animations API'],
+      'The site you are reading. Angular 20, Tailwind v4, magnetic cursor, and scroll-driven interface details.',
+    stack: ['Angular 20', 'Tailwind v4', 'Web Animations API'],
     category: 'frontend',
     language: 'TypeScript',
     accent: '#d23045',
