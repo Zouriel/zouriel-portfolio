@@ -188,6 +188,8 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
         max-width: 1400px;
         margin: 0 auto;
         padding: 0 1.5rem 6rem;
+        overflow-x: hidden;
+        overflow-x: clip;
       }
       @media (min-width: 768px) {
         .hero { padding: 0 4rem 8rem; }
@@ -203,11 +205,19 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
         letter-spacing: 0.12em;
         text-transform: uppercase;
         color: rgba(255, 255, 255, 0.4);
+        gap: 1rem;
       }
       .meta-bar__l {
         display: inline-flex;
         align-items: center;
         gap: 0.6rem;
+        min-width: 0;
+      }
+      .meta-bar__l span:last-child {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .meta-bar__l .dot {
         width: 7px;
@@ -220,6 +230,7 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
       .meta-bar__r {
         display: inline-flex;
         gap: 0.6rem;
+        flex-shrink: 0;
       }
       .meta-bar__r .sep { opacity: 0.4; }
 
@@ -242,6 +253,7 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
         display: block;
         white-space: nowrap;
         overflow: visible;
+        max-width: 100%;
       }
       .name__row--accent {
         font-style: italic;
@@ -546,6 +558,11 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
         -webkit-text-fill-color: transparent;
         color: transparent;
         transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        max-width: 100%;
+      }
+      .foot__cta span:first-child {
+        min-width: 0;
+        overflow-wrap: anywhere;
       }
       .foot__arrow {
         display: inline-block;
@@ -564,6 +581,24 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
         letter-spacing: 0.22em;
         text-transform: uppercase;
         color: rgba(255, 255, 255, 0.4);
+      }
+
+      @media (max-width: 640px) {
+        .meta-bar {
+          align-items: flex-start;
+        }
+        .name {
+          font-size: clamp(3rem, 13vw, 5rem);
+        }
+        .foot__cta {
+          gap: 0.6rem;
+          font-size: clamp(1.35rem, 7vw, 2rem);
+          line-height: 1.05;
+        }
+        .foot__row {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
       }
     `,
   ],
