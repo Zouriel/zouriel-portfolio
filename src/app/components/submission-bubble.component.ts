@@ -241,9 +241,8 @@ const HINT_SESSION_KEY = 'sb_hinted_v1';
         animation-delay: 1.2s;
       }
       @keyframes submissionPulse {
-        0%   { transform: scale(0.85); opacity: 0.85; border-color: rgba(245,158,11,0.55); }
-        80%  { transform: scale(2.0);  opacity: 0;    border-color: rgba(245,158,11,0); }
-        100% { transform: scale(2.0);  opacity: 0;    border-color: rgba(245,158,11,0); }
+        0% { transform: scale(.85); opacity: .85; border-color: rgba(245,158,11,.55); }
+        80%, 100% { transform: scale(2); opacity: 0; border-color: rgba(245,158,11,0); }
       }
 
       .submission-trigger__label {
