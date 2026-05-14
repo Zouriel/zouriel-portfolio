@@ -8,17 +8,15 @@ import { NavKey } from './nav-items';
     @switch (name) {
       @case ('home') {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-          <path d="M3 11.5L12 4l9 7.5" />
-          <path d="M5 10.5v8.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8.5" />
-          <path d="M9.5 20v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5" />
+          <path d="M4 11.5 12 4l8 7.5" />
+          <path d="M6 10.5V19a1 1 0 0 0 1 1h3.5v-5.5h3V20H17a1 1 0 0 0 1-1v-8.5" />
         </svg>
       }
       @case ('projects') {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-          <rect x="3" y="4" width="7" height="7" rx="1.5" />
-          <rect x="14" y="4" width="7" height="7" rx="1.5" />
-          <rect x="3" y="14" width="7" height="7" rx="1.5" />
-          <path d="M14 17.5h7M17.5 14v7" />
+          <path d="M3 7.5 12 3l9 4.5-9 4.5-9-4.5Z" />
+          <path d="m3 12 9 4.5L21 12" />
+          <path d="m3 16.5 9 4.5 9-4.5" />
         </svg>
       }
       @case ('dev') {
@@ -44,9 +42,11 @@ import { NavKey } from './nav-items';
         </svg>
       }
       @case ('military') {
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-          <path d="M12 3l7 2v6c0 5-3.5 8-7 10-3.5-2-7-5-7-10V5l7-2z" />
-          <path d="M9 12l2 2 4-4" />
+        <!-- stacked rank chevrons -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+          <path d="M3 9 12 4l9 5" />
+          <path d="M3 14 12 9l9 5" />
+          <path d="M3 19 12 14l9 5" />
         </svg>
       }
       @case ('athletics') {

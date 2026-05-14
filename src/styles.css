@@ -27,6 +27,13 @@ body {
   cursor: none;
 }
 
+/* reserve space for the fixed desktop rail so content is pushed aside */
+@media (min-width: 768px) {
+  main {
+    padding-left: 6rem;
+  }
+}
+
 @media (pointer: coarse) {
   body { cursor: auto; }
 }

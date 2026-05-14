@@ -32,7 +32,7 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
       <header class="meta-bar font-mono">
         <div class="meta-bar__l">
           <span class="dot"></span>
-          <span>Now lecturing &amp; engineering — Malé, Maldives</span>
+          <span>Engineering &amp; lecturing — Malé, Maldives</span>
         </div>
         <div class="meta-bar__r">
           <span>{{ today }}</span>
@@ -80,10 +80,10 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
         <div class="bio" reveal="blur" [revealDelay]="850">
           <p class="bio__lead text-pretty">
             <span class="bio__amp">&amp;</span>
-            I build disciplined, cinematic software — production systems, classroom
-            tools, and personal experiments — with the same precision I learned
-            as a Lance Corporal in the
-            <a class="link-line" routerLink="/military">Maldives National Defense Force Marine Corps</a>.
+            I write code for a living. Production systems, classroom tools,
+            and the side projects I can't quite put down. Most of the discipline
+            came from my time as a Lance Corporal in the
+            <a class="link-line" routerLink="/military">MNDF Marine Corps</a>.
           </p>
         </div>
 
@@ -143,25 +143,26 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
 
         <div class="about__grid">
           <h2 class="about__h font-display" reveal="up">
-            Discipline is a
-            <span class="ital">technique.</span> So is taste.
+            I just like building things that
+            <span class="ital">actually work.</span>
           </h2>
           <div class="about__body">
             <p class="about__p" reveal="up" [revealDelay]="100">
-              I write code the way I trained as a Marine — methodical, calm
-              under load, and uncompromising about the standards I leave in the
-              codebase.
+              A lot of the way I work came from the Marine Corps. Plan
+              before you move, stay calm when things break, don't leave a mess
+              in the code for the next person.
             </p>
             <p class="about__p" reveal="up" [revealDelay]="200">
-              I am currently engineering at
-              <a class="link-line" href="#">Oxiqa</a> and lecturing Computer
-              Science at <a class="link-line" href="#">Villa College</a> — a
-              partnership with UWE Bristol where I finished my BSc with first
-              class honours.
+              These days I'm engineering at
+              <a class="link-line" href="#">Oxiqa</a> and teaching Computer
+              Science at <a class="link-line" href="#">Villa College</a>, the
+              UWE Bristol partner here in Malé where I also did my BSc
+              (first class).
             </p>
             <p class="about__p" reveal="up" [revealDelay]="300">
-              I have shipped full-stack platforms across MOTCA, MWSC, Joali, and
-              independent classrooms. The work is the proof.
+              I've shipped full-stack work for MOTCA, MWSC, Joali, and a
+              handful of classrooms along the way. The projects page has the
+              rest.
             </p>
           </div>
         </div>
@@ -170,7 +171,7 @@ import { homePageData, SocialLinks } from '../data/home-page.data';
       <!-- FOOTER -->
       <footer class="foot">
         <div class="foot__big font-display" reveal="up">
-          Got a system worth building?
+          Got something you want built?
         </div>
         <a class="foot__cta font-display" href="mailto:{{ data.email }}" data-magnetic reveal="up" [revealDelay]="120">
           <span>{{ data.email }}</span>

@@ -93,10 +93,19 @@ import { NavigationConfig } from '../data/nav-items';
           [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
           (click)="close()"
           class="m-panel__item"
+          [class.m-panel__item--service]="item.icon === 'military'"
           [style.transitionDelay]="(i * 35) + 'ms'"
         >
           <span class="font-mono text-[11px] tracking-widest text-white/40">{{ item.index }}</span>
+          @if (item.icon === 'military') {
+            <span class="m-panel__icon" aria-hidden="true">
+              <app-icon name="military" />
+            </span>
+          }
           <span class="font-display text-2xl">{{ item.label }}</span>
+          @if (item.icon === 'military') {
+            <span class="m-panel__tag font-mono">LCpl</span>
+          }
           <span class="ml-auto opacity-0 group-[.m-panel--open]:opacity-100">→</span>
         </a>
         }
@@ -281,6 +290,86 @@ import { NavigationConfig } from '../data/nav-items';
         opacity: 1;
       }
       .m-panel__item.is-active { color: #f59e0b; }
+
+      /* mobile: animated service line */
+      .m-panel__item--service {
+        position: relative;
+        color: #fde68a;
+        border-bottom-color: rgba(245, 158, 11, 0.28);
+        background: linear-gradient(
+          90deg,
+          rgba(245, 158, 11, 0.08) 0%,
+          rgba(245, 158, 11, 0) 70%
+        );
+      }
+      .m-panel__item--service::before {
+        content: "";
+        position: absolute;
+        left: -1.5rem;
+        top: 50%;
+        width: 3px;
+        height: 1.6em;
+        border-radius: 3px;
+        background: linear-gradient(180deg, #f59e0b, #d23045);
+        box-shadow: 0 0 12px rgba(245, 158, 11, 0.65);
+        transform: translateY(-50%) scaleY(0.6);
+        opacity: 0;
+        transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        transition-delay: 320ms;
+      }
+      .m-panel--open .m-panel__item--service::before {
+        opacity: 1;
+        animation: serviceRailPulse 2.4s ease-in-out 1s infinite;
+      }
+      .m-panel__icon {
+        display: inline-flex;
+        color: #f59e0b;
+        filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.45));
+        transform: translateX(-8px) rotate(-10deg);
+        opacity: 0;
+        transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        transition-delay: 380ms;
+      }
+      .m-panel--open .m-panel__icon {
+        transform: translateX(0) rotate(0);
+        opacity: 1;
+        animation: serviceIconFloat 3.2s ease-in-out 1.1s infinite;
+      }
+      .m-panel__tag {
+        margin-left: 0.6rem;
+        font-size: 9.5px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        padding: 0.25rem 0.55rem;
+        border-radius: 4px;
+        color: #fde68a;
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.4);
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        transition-delay: 460ms;
+      }
+      .m-panel--open .m-panel__tag {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      @keyframes serviceRailPulse {
+        0%, 100% {
+          transform: translateY(-50%) scaleY(1);
+          box-shadow: 0 0 12px rgba(245, 158, 11, 0.55);
+        }
+        50% {
+          transform: translateY(-50%) scaleY(1.18);
+          box-shadow: 0 0 22px rgba(245, 158, 11, 0.9);
+        }
+      }
+      @keyframes serviceIconFloat {
+        0%, 100% { transform: translateY(0) rotate(0); }
+        50%      { transform: translateY(-3px) rotate(-2deg); }
+      }
 
       @media (min-width: 768px) {
         .m-toggle, .m-panel { display: none; }
