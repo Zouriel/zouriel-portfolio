@@ -5,6 +5,7 @@ import { CursorComponent } from './components/cursor.component';
 import { ScrollProgressComponent } from './components/scroll-progress.component';
 import { IntroLoaderComponent } from './components/intro-loader.component';
 import { SubmissionBubbleComponent } from './components/submission-bubble.component';
+import { BinaryFaceBackgroundComponent } from './components/binary-face-background.component';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { SubmissionBubbleComponent } from './components/submission-bubble.compon
     ScrollProgressComponent,
     IntroLoaderComponent,
     SubmissionBubbleComponent,
+    BinaryFaceBackgroundComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
