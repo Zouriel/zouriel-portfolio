@@ -1,3 +1,5 @@
+import { runtimeContent } from './_runtime';
+
 export interface MilitaryCourse {
   title: string;
   org: string;
@@ -21,7 +23,7 @@ export interface MilitaryPageData {
   courses: MilitaryCourse[];
 }
 
-export const militaryData: MilitaryPageData = {
+const MILITARY_FALLBACK: MilitaryPageData = {
   branch: 'Maldives National Defense Force — Marine Corps',
   branchShort: 'MNDF Marine Corps',
   period: 'Mar 2016 — 2022',
@@ -67,3 +69,10 @@ export const militaryData: MilitaryPageData = {
     },
   ],
 };
+
+export const militaryData: MilitaryPageData = new Proxy(MILITARY_FALLBACK, {
+  get(target, prop) {
+    const live = runtimeContent.military;
+    return (live ?? target)[prop as keyof MilitaryPageData];
+  },
+});

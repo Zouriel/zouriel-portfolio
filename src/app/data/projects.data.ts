@@ -1,3 +1,5 @@
+import { runtimeContent } from './_runtime';
+
 export type ProjectCategory =
   | 'fullstack'
   | 'frontend'
@@ -20,7 +22,7 @@ export interface Project {
   featured?: boolean;
 }
 
-export const projects: Project[] = [
+const PROJECTS_FALLBACK: Project[] = [
   {
     name: 'Kuri',
     tagline: 'Ministry of Higher Education national portal',
@@ -149,7 +151,7 @@ export const projects: Project[] = [
   },
 ];
 
-export const projectCategories: { key: ProjectCategory | 'all'; label: string }[] = [
+const CATEGORIES_FALLBACK: { key: ProjectCategory | 'all'; label: string }[] = [
   { key: 'all', label: 'All Works' },
   { key: 'fullstack', label: 'Full-Stack' },
   { key: 'frontend', label: 'Front-End' },
@@ -157,3 +159,22 @@ export const projectCategories: { key: ProjectCategory | 'all'; label: string }[
   { key: 'desktop', label: 'Desktop' },
   { key: 'experiment', label: 'Experiments' },
 ];
+
+export const projects: Project[] = new Proxy(PROJECTS_FALLBACK, {
+  get(target, prop) {
+    const live = (runtimeContent.projects?.projects as Project[] | undefined) ?? target;
+    return (live as unknown as Record<PropertyKey, unknown>)[prop];
+  },
+});
+
+export const projectCategories: { key: ProjectCategory | 'all'; label: string }[] = new Proxy(
+  CATEGORIES_FALLBACK,
+  {
+    get(target, prop) {
+      const live =
+        (runtimeContent.projects?.categories as { key: ProjectCategory | 'all'; label: string }[] | undefined) ??
+        target;
+      return (live as unknown as Record<PropertyKey, unknown>)[prop];
+    },
+  },
+);

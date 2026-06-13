@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Zouriel — Content</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Vite dev server refuses to serve .yml from /public, so point Decap at the JSON-format config -->
+    <link rel="cms-config-url" type="application/json" href="/admin/config.json" />
+    <style>
+      html, body { background: #0a0608; }
+    </style>
+  </head>
+  <body>
+    <!-- Decap CMS — edits commit JSON in /public/content/ and images in /public/uploads/ -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  </body>
+</html>

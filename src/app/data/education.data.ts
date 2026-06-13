@@ -1,19 +1,21 @@
+import { runtimeContent } from './_runtime';
+
 export type EducationItem = {
-  degree: string; // e.g., BSc (Hons) in Computer Science – First Class
-  institution: string; // e.g., UWE Bristol (via Villa College)
+  degree: string;
+  institution: string;
   location?: string;
-  period: string; // e.g., 2022 — Sep 2025
-  result?: string; // e.g., First Class Honours, GPA, awards
-  highlights?: string[]; // bullets about capstone, focus areas, roles
-  coursework?: string[]; // selected modules
+  period: string;
+  result?: string;
+  highlights?: string[];
+  coursework?: string[];
 };
 
 export type CertificateItem = {
   title: string;
   issuer: string;
   location?: string;
-  date: string; // month/year or range
-  notes?: string[]; // optional bullets
+  date: string;
+  notes?: string[];
   category?: 'Certification' | 'Training' | 'License';
 };
 
@@ -25,12 +27,11 @@ export type EducationPageData = {
   certifications: CertificateItem[];
 };
 
-export const educationPageData: EducationPageData = {
+const EDUCATION_FALLBACK: EducationPageData = {
   headline: 'Education',
   subhead: 'Computer Science · Technical Foundations · Operational Training',
   summary:
     'Formal study paired with hands-on, mission-ready training. A developer with a field-tested mindset—precise under pressure, methodical by habit.',
-
   education: [
     {
       degree: 'BSc (Hons) Computer Science — First Class Honours',
@@ -80,7 +81,6 @@ export const educationPageData: EducationPageData = {
       period: '—',
     },
   ],
-
   certifications: [
     {
       title: 'Basic Seamanship Training',
@@ -140,3 +140,10 @@ export const educationPageData: EducationPageData = {
     },
   ],
 };
+
+export const educationPageData: EducationPageData = new Proxy(EDUCATION_FALLBACK, {
+  get(target, prop) {
+    const live = runtimeContent.education;
+    return (live ?? target)[prop as keyof EducationPageData];
+  },
+});
