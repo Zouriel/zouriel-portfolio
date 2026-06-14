@@ -1,5 +1,3 @@
-import { runtimeContent } from './_runtime';
-
 export type ExperienceType = 'work' | 'lecturer';
 
 export type ExperienceItem = {
@@ -8,12 +6,12 @@ export type ExperienceItem = {
   role: string;
   location?: string;
   period: string;
-  summary?: string;
-  highlights: string[];
-  stack?: string[];
+  summary?: string; // one-line context
+  highlights: string[]; // action + outcome phrasing
+  stack?: string[]; // tech / domains / tools
 };
 
-const WORK_FALLBACK: ExperienceItem[] = [
+export const workExperienceData: ExperienceItem[] = [
   {
     type: 'work',
     org: 'Oxiqa Private Limited',
@@ -28,8 +26,18 @@ const WORK_FALLBACK: ExperienceItem[] = [
       'Codified CI/CD steps (build, test, lint, preview, deploy) and environment conventions for smoother releases.',
       'Led cross-service integrations (file storage, notifications, payments) with clear adapters and test seams.',
     ],
-    stack: ['Angular', 'TypeScript', '.NET', 'PostgreSQL', 'Docker', 'GitHub Actions', 'OpenAPI', 'Tailwind'],
+    stack: [
+      'Angular',
+      'TypeScript',
+      '.NET',
+      'PostgreSQL',
+      'Docker',
+      'GitHub Actions',
+      'OpenAPI',
+      'Tailwind',
+    ],
   },
+
   {
     type: 'work',
     org: 'Maldives Water and Sewerage Company (MWSC)',
@@ -44,8 +52,16 @@ const WORK_FALLBACK: ExperienceItem[] = [
       'Refactored legacy views into modular components and improved UX with responsive, accessible layouts.',
       'Partnered with UI/UX to streamline screens, reduce clicks on frequent tasks, and clarify error handling.',
     ],
-    stack: ['.NET', 'Angular', 'SQL Server', 'Tailwind', 'Swagger/OpenAPI', 'Identity/JWT'],
+    stack: [
+      '.NET',
+      'Angular',
+      'SQL Server',
+      'Tailwind',
+      'Swagger/OpenAPI',
+      'Identity/JWT',
+    ],
   },
+
   {
     type: 'work',
     org: 'Maldives National Defense Force',
@@ -61,6 +77,7 @@ const WORK_FALLBACK: ExperienceItem[] = [
     ],
     stack: ['Leadership', 'Team Ops', 'Field Readiness', 'Comms Discipline'],
   },
+
   {
     type: 'work',
     org: 'ReefSand Maldives Pvt. Ltd.',
@@ -76,6 +93,8 @@ const WORK_FALLBACK: ExperienceItem[] = [
     ],
     stack: ['Windows Admin', 'Helpdesk', 'Networking Basics', 'Web Essentials'],
   },
+
+  // Lecturer entry (kept here so one source of truth; your page can filter by type)
   {
     type: 'lecturer',
     org: 'Villa College (UWE Bristol Partnership)',
@@ -89,13 +108,12 @@ const WORK_FALLBACK: ExperienceItem[] = [
       'Designed weekly artifacts and assessments emphasising testing, git workflows, and documentation quality.',
       'Mentored teams on scoping, iteration planning, and presenting technical work to non-technical stakeholders.',
     ],
-    stack: ['Angular', '.NET', 'Git/GitHub', 'CI/CD Basics', 'Software Engineering Practices'],
+    stack: [
+      'Angular',
+      '.NET',
+      'Git/GitHub',
+      'CI/CD Basics',
+      'Software Engineering Practices',
+    ],
   },
 ];
-
-export const workExperienceData: ExperienceItem[] = new Proxy(WORK_FALLBACK, {
-  get(target, prop) {
-    const live = (runtimeContent.work?.entries as ExperienceItem[] | undefined) ?? target;
-    return (live as unknown as Record<PropertyKey, unknown>)[prop];
-  },
-});

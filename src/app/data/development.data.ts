@@ -1,5 +1,4 @@
-import { runtimeContent } from './_runtime';
-
+// Types keep things honest and make refactors painless.
 export type Proficiency = 'Learning' | 'Working' | 'Advanced' | 'Expert';
 
 export type SkillItem = {
@@ -31,12 +30,13 @@ export type DevPageData = {
   tools: string[];
 };
 
-const DEV_FALLBACK: DevPageData = {
+export const devPageData: DevPageData = {
   headline: 'Development',
   subhead: 'Systems that scale. Code that holds the line.',
-  summary: `Full-stack engineer with a military-honed bias for clarity, reliability, and execution.
-     I design and build web platforms end-to-end—from crisp Angular front-ends to robust .NET
+  summary: `Full-stack engineer with a military-honed bias for clarity, reliability, and execution. 
+     I design and build web platforms end-to-end—from crisp Angular front-ends to robust .NET 
      and Node services—deploying with containerized workflows and pragmatic CI/CD.`,
+
   skillGroups: [
     {
       title: 'Languages',
@@ -75,12 +75,13 @@ const DEV_FALLBACK: DevPageData = {
       ],
     },
   ],
-  tools: ['Git & GitHub', 'GitHub Actions', 'CI/CD', 'VS Code', 'Postman', 'Swagger / OpenAPI'],
-};
 
-export const devPageData: DevPageData = new Proxy(DEV_FALLBACK, {
-  get(target, prop) {
-    const live = runtimeContent.development;
-    return (live ?? target)[prop as keyof DevPageData];
-  },
-});
+  tools: [
+    'Git & GitHub',
+    'GitHub Actions',
+    'CI/CD',
+    'VS Code',
+    'Postman',
+    'Swagger / OpenAPI',
+  ],
+};
