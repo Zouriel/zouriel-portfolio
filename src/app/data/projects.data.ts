@@ -45,8 +45,32 @@ export const projects: Project[] = [
     accent: '#a78bfa',
     year: '2026',
     live: 'https://lektrus.com',
-    repo: 'https://github.com/Zouriel/classFlow',
     featured: true,
+  },
+  {
+    name: 'TgCli',
+    tagline: 'Telegram CLI on TDLib — scriptable, agent-friendly',
+    description:
+      'A Go command-line client for Telegram built on TDLib. Send and receive messages and media, follow chats live, and `tg ask` blocks until you reply — wired for cron, CI, and AI-agent loops. Ships a portable self-contained release for Linux + Windows.',
+    stack: ['Go', 'TDLib', 'CLI', 'Linux', 'Windows', 'Docker'],
+    category: 'fullstack',
+    language: 'Go',
+    accent: '#22d3ee',
+    year: '2026',
+    repo: 'https://github.com/Zouriel/TgCli',
+    featured: true,
+  },
+  {
+    name: 'tgcli-skill',
+    tagline: 'Claude Agent Skill — reach you on Telegram',
+    description:
+      'A skill module for Claude Code / Codex that teaches the agent to message you on Telegram via TgCli — fire-and-forget notifications, blocking ask-and-wait prompts, file send/receive. Lets a long-running agent flag blockers or finished work to your phone.',
+    stack: ['Claude Code', 'Agent Skills', 'Shell', 'TgCli'],
+    category: 'experiment',
+    language: 'Shell · Skill',
+    accent: '#fbbf24',
+    year: '2026',
+    repo: 'https://github.com/Zouriel/tgcli-skill',
   },
   {
     name: 'MOTCA Domain',
@@ -58,7 +82,6 @@ export const projects: Project[] = [
     language: 'Angular · .NET',
     accent: '#fb7185',
     year: '2026',
-    repo: 'https://github.com/Zouriel/motca-domain',
   },
   {
     name: 'IMS — Inventory Management',
@@ -70,7 +93,6 @@ export const projects: Project[] = [
     language: 'Angular · .NET',
     accent: '#22d3ee',
     year: '2025',
-    repo: 'https://github.com/Zouriel/IMS-FrontEnd',
     featured: true,
   },
   {
@@ -83,7 +105,6 @@ export const projects: Project[] = [
     language: 'Go · Angular',
     accent: '#34d399',
     year: '2025',
-    repo: 'https://github.com/Zouriel/taskerr_backend',
     featured: true,
   },
   {
@@ -108,7 +129,6 @@ export const projects: Project[] = [
     language: 'Vue · Django',
     accent: '#22d3ee',
     year: '2025',
-    repo: 'https://github.com/Zouriel/ECom_Shop',
   },
   {
     name: 'UI Monitor',
@@ -132,7 +152,6 @@ export const projects: Project[] = [
     language: 'Angular',
     accent: '#facc15',
     year: '2025',
-    repo: 'https://github.com/Zouriel/AuthClient1',
   },
   {
     name: 'zouriel.dev',

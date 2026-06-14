@@ -7,6 +7,7 @@ export const homePageData = {
     'Blending disciplined military precision with creative engineering to build meaningful digital experiences. Passionate about innovation, performance, and leaving a legacy of excellence both in technology and in life.',
 };
 export const SocialLinks = {
+  telegram: 'https://t.me/AerisCorbett',
   instagram: 'https://www.instagram.com/zourielcorbett?igsh=Y3hiMGtwOWlyamVx',
   facebook: 'https://www.facebook.com/share/16UeLZKDHU/',
   //   discord: 'https://discordapp.com/users/your-id',

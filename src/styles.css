@@ -27,6 +27,21 @@ body {
   cursor: none;
 }
 
+/* Keep body text legible over the binary-face background (the screen-blend
+   shader brightens patches of the page). A faint dark halo costs nothing on
+   solid-dark sections and saves the reading-line where the face peeks through. */
+main {
+  text-shadow:
+    0 0 6px rgba(10, 6, 8, 0.65),
+    0 0 1px rgba(10, 6, 8, 0.9);
+}
+main h1,
+main h2,
+main h3,
+main .font-display {
+  text-shadow: 0 0 14px rgba(10, 6, 8, 0.75);
+}
+
 /* reserve space for the fixed desktop rail so content is pushed aside */
 @media (min-width: 768px) {
   main {

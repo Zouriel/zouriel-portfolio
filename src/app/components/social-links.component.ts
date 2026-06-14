@@ -9,7 +9,8 @@ type Network =
   | 'discordServer'
   | 'github'
   | 'strava'
-  | 'linkedin';
+  | 'linkedin'
+  | 'telegram';
 
 export type SocialLinks = Partial<Record<Network, string>>;
 
@@ -104,6 +105,16 @@ export type SocialLinks = Partial<Record<Network, string>>;
             d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8.5h4V23h-4V8.5zm7 0h3.8v1.9h.1c.5-.9 1.8-2.1 3.9-2.1C20.1 8.3 23 10 23 14.2V23h-4v-7.6c0-1.8-.6-3.1-2.2-3.1-1.2 0-1.9.8-2.2 1.6-.1.3-.1.7-.1 1.1V23h-4c.1-9.7 0-14.5 0-14.5z"
           />
         </svg>
+        } @case ('telegram') {
+        <svg
+          class="w-[1.1rem] h-[1.1rem]"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M12 0a12 12 0 100 24 12 12 0 000-24zm5.6 8.2-1.9 8.8c-.1.6-.5.8-1 .5l-2.8-2-1.4 1.3c-.2.2-.3.3-.6.3l.2-3 5.4-4.9c.2-.2 0-.3-.3-.1l-6.7 4.2-2.9-.9c-.6-.2-.6-.6.1-1l11.3-4.4c.5-.2 1 .1.8.9z"
+          />
+        </svg>
         } }
         <span class="text-sm">{{ item.label }}</span>
       </a>
@@ -117,6 +128,7 @@ export class SocialLinksComponent {
   ordered() {
     if (!this.links) return [];
     const order: Network[] = [
+      'telegram',
       'instagram',
       'facebook',
       'discord',
@@ -130,8 +142,18 @@ export class SocialLinksComponent {
       .map((key) => ({
         key,
         href: this.links[key]!,
-        label: key === 'discordServer' ? 'Join Server' : this.titleCase(key),
+        label:
+          key === 'discordServer'
+            ? 'Join Server'
+            : key === 'telegram'
+              ? this.telegramHandle(this.links[key]!) ?? 'Telegram'
+              : this.titleCase(key),
       }));
+  }
+
+  private telegramHandle(url: string): string | null {
+    const m = url.match(/t\.me\/([A-Za-z0-9_]+)/);
+    return m ? '@' + m[1] : null;
   }
 
   private titleCase(x: string) {

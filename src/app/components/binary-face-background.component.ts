@@ -30,7 +30,7 @@ import {
         height: 100%;
         z-index: 5;
         pointer-events: none;
-        opacity: 1;
+        opacity: 0.55;
         mix-blend-mode: screen;
       }
     `,
