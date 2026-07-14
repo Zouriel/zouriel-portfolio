@@ -44,3 +44,4 @@ Thumbs.db
 # Local staging / scratch (not part of the app)
 /files
 /tg-uploads
+/.playwright-mcp
