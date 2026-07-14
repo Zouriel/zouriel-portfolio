@@ -1,0 +1,575 @@
+{
+  "meta": {
+    "source": "Mohamed Imdhah Nasrullah CV - AI Engineer.pdf",
+    "skillLevelScale": {
+      "description": "Experience level 1-10, derived from GitHub project evidence (see projects.json), not self-report.",
+      "1-2": "Aware / beginner",
+      "3-4": "Basic familiarity, limited or no project evidence",
+      "5-6": "Intermediate working proficiency",
+      "7-8": "Advanced / proficient across multiple production projects",
+      "9-10": "Expert / core daily-driver with deep production usage"
+    }
+  },
+  "personalInfo": {
+    "name": "Mohamed Imdaah Nasrullah",
+    "title": "AI Engineer",
+    "email": "mohamed.imdaah@gmail.com",
+    "portfolio": "zouriel.com",
+    "phone": "+960 781 9157",
+    "location": "Hulhumalé, Flat 92 G-02, Maldives",
+    "dateOfBirth": "1996-11-04",
+    "nationality": "Maldivian",
+    "github": "github.com/Zouriel"
+  },
+  "profile": "AI engineer and full-stack developer focused on building intelligent, production-ready applications, integrating large language models, agents, and automation into scalable, maintainable systems. Experienced across frontend and backend development with a strong grounding in .NET and modern web stacks, and a proven ability to pick up new tools and frameworks on the fly. A confident communicator with a military-trained mindset that thrives in high-pressure, mission-critical environments where precision and execution matter.",
+  "spokenLanguages": [
+    {
+      "language": "Dhivehi",
+      "proficiency": "Native"
+    },
+    {
+      "language": "English",
+      "proficiency": "Advanced"
+    },
+    {
+      "language": "Arabic",
+      "proficiency": "Advanced"
+    }
+  ],
+  "coreStrengths": [
+    "Teamwork",
+    "Problem-Solving",
+    "Leadership",
+    "Public Speaking",
+    "Mentoring",
+    "Conflict Resolution"
+  ],
+  "technicalSkills": {
+    "aiMl": [
+      {
+        "name": "AI Agents",
+        "level": 8,
+        "evidence": "zcoms-agent multi-agent pipeline: role-separated Interviewer -> Guard -> Producer stages, per-persona prompts (bridge/triage/standup/reminders/etc.), session and scheduler management, running as a production daemon"
+      },
+      {
+        "name": "LLM Integration",
+        "level": 8,
+        "evidence": "Pluggable Claude/Codex backend abstraction with per-task routing (agents.json), turn timeouts, bounded output capture, and session lifecycle in zcoms-agent"
+      },
+      {
+        "name": "Prompt Engineering",
+        "level": 8,
+        "evidence": "Per-persona seed prompts with runtime dynamic-context injection, plus adversarial Guard prompts that detect prompt-injection, data-exfiltration, and malicious links"
+      },
+      {
+        "name": "RAG",
+        "level": 4,
+        "evidence": "Listed skill; no retrieval/embeddings/vector-store pipeline found in reviewed repositories"
+      }
+    ],
+    "languages": [
+      {
+        "name": "C#",
+        "level": 9,
+        "evidence": "Primary backend language across VerifyPortal, invites.blog (.NET 10), classFlow (.NET 9), IMS, MOTCA, JoaliBackend"
+      },
+      {
+        "name": "TypeScript",
+        "level": 9,
+        "evidence": "All Angular/Next.js frontends plus a ~110-component Angular v22 UI library"
+      },
+      {
+        "name": "Go",
+        "level": 8,
+        "evidence": "Entire zcoms ecosystem (Go 1.25, ~234 commits) and the Taskerr backend"
+      },
+      {
+        "name": "SQL",
+        "level": 8,
+        "evidence": "Relational modeling across SQL Server, PostgreSQL, and MySQL projects"
+      },
+      {
+        "name": "PHP",
+        "level": 7,
+        "evidence": "HEMS Laravel backend as a core-team contributor across core, admin, and student APIs"
+      },
+      {
+        "name": "JavaScript",
+        "level": 6,
+        "evidence": "Node WhatsApp sidecar tooling and the compiled Angular/browser runtime; primary web work is in TypeScript"
+      },
+      {
+        "name": "Python",
+        "level": 5,
+        "evidence": "Production FastAPI sidecar (zcoms contrib/instagram-sidecar) wrapping instagrapi: typed pydantic request models, custom exception handlers mapping upstream failures to 401/429/502, a two-step 2FA/challenge login flow with authenticator/SMS/WhatsApp method selection, and session dump/restore with validation"
+      }
+    ],
+    "backendAndFrameworks": [
+      {
+        "name": ".NET / .NET Core",
+        "level": 9,
+        "evidence": "Dominant backend platform across six+ projects, from .NET 8 to .NET 10"
+      },
+      {
+        "name": "ASP.NET",
+        "level": 9,
+        "evidence": "Web APIs in every .NET project, several using Clean Architecture/CQRS"
+      },
+      {
+        "name": "Entity Framework",
+        "level": 9,
+        "evidence": "EF Core data access in all .NET backends"
+      },
+      {
+        "name": "Laravel",
+        "level": 7,
+        "evidence": "HEMS backend APIs (PHP 8.2+, Laravel) as core-team contributor"
+      },
+      {
+        "name": "Next.js",
+        "level": 6,
+        "evidence": "HEMS admin and student portals (Next.js 15 / React 19), team project"
+      },
+      {
+        "name": "Gin",
+        "level": 6,
+        "evidence": "Taskerr backend (Go + Gin + GORM + WebSockets)"
+      }
+    ],
+    "frontend": [
+      {
+        "name": "Angular",
+        "level": 9,
+        "evidence": "v18-v22 across 8+ projects including a ~110-component standalone UI library"
+      },
+      {
+        "name": "HTML5",
+        "level": 8,
+        "evidence": "Foundational to all web frontends"
+      },
+      {
+        "name": "CSS3",
+        "level": 8,
+        "evidence": "Tailwind CSS, SCSS, and token-driven theming systems"
+      },
+      {
+        "name": "Electron",
+        "level": 3,
+        "evidence": "Listed skill; no evidence in reviewed repositories"
+      }
+    ],
+    "dataAndDevOps": [
+      {
+        "name": "REST APIs",
+        "level": 9,
+        "evidence": "Designed and consumed across every full-stack project"
+      },
+      {
+        "name": "Git",
+        "level": 9,
+        "evidence": "Version control across all repositories"
+      },
+      {
+        "name": "Auth / JWT",
+        "level": 9,
+        "evidence": "JWT auth, refresh tokens, and RBAC in every backend"
+      },
+      {
+        "name": "SQL Server",
+        "level": 7,
+        "evidence": "Primary database for IMS and JoaliBackend"
+      },
+      {
+        "name": "CI/CD",
+        "level": 7,
+        "evidence": "GitHub Actions VPS deploys (Lektrus, portfolio, VerifyPortal) and Ansible provisioning (HEMS)"
+      }
+    ]
+  },
+  "experience": [
+    {
+      "role": "Lecturer — Computer Science (Part-Time)",
+      "organization": "Villa College (UWE Bristol Partnership)",
+      "location": "Malé, Maldives",
+      "startDate": "2025-10",
+      "endDate": "present",
+      "summary": "Teaching and mentoring BSc students with a practical, industry-aligned approach.",
+      "stack": [
+        "Angular",
+        ".NET",
+        "Git/GitHub",
+        "CI/CD Basics",
+        "Software Engineering Practices"
+      ],
+      "responsibilities": [
+        "Deliver lectures and practical sessions for UWE Bachelor of Science modules, including Advanced Software Development and the Group Software Development Project.",
+        "Design weekly artifacts and assessments emphasising testing, git workflows, and documentation quality.",
+        "Mentor teams on scoping, iteration planning, and presenting technical work to non-technical stakeholders."
+      ]
+    },
+    {
+      "role": "Full-Stack Engineer",
+      "organization": "Oxiqa Private Limited",
+      "location": "Malé, Maldives",
+      "startDate": "2025-08",
+      "endDate": "present",
+      "summary": "Delivering end-to-end features across multiple client projects with a focus on reliability, DX, and clean deployments.",
+      "stack": [
+        "Angular",
+        "TypeScript",
+        ".NET",
+        "PostgreSQL",
+        "Docker",
+        "GitHub Actions",
+        "OpenAPI",
+        "Tailwind"
+      ],
+      "responsibilities": [
+        "Develop and maintain full-stack solutions across diverse technologies, adapting quickly to varied client and project requirements.",
+        "Architect, implement, and integrate front-end and back-end systems with a focus on scalability, performance, and security.",
+        "Harden auth/session flows, error boundaries, and network retries to reduce flaky UX and support load.",
+        "Contribute to infrastructure setup, CI/CD pipelines, and environment management to streamline deployments.",
+        "Lead cross-service integrations (file storage, notifications, payments) with clear adapters and test seams.",
+        "Collaborate with cross-functional teams to design and deliver robust, end-to-end software solutions."
+      ]
+    },
+    {
+      "role": "Software Developer",
+      "organization": "Maldives Water and Sewerage Company (MWSC)",
+      "location": "Malé, Maldives",
+      "startDate": "2024-04",
+      "endDate": "2025-07",
+      "summary": "Modernised internal systems and interfaces; implemented secure authentication and maintainable REST services.",
+      "stack": [
+        ".NET",
+        "Angular",
+        "SQL Server",
+        "Tailwind",
+        "Swagger/OpenAPI",
+        "Identity/JWT"
+      ],
+      "responsibilities": [
+        "Developed and maintained enterprise-grade full-stack applications using .NET and Angular.",
+        "Implemented token-based authentication/authorisation with role-aware UI guards and API middleware.",
+        "Built RESTful APIs for inventory and HR workflows with clear DTOs, validation, and Swagger docs.",
+        "Refactored legacy views into modular components and improved UX with responsive, accessible layouts.",
+        "Collaborated with UI/UX teams to modernize and optimize system interfaces."
+      ]
+    },
+    {
+      "role": "Marine",
+      "organization": "Maldives National Defense Force",
+      "location": "Malé, Maldives",
+      "startDate": "2016-03",
+      "endDate": "2022-10",
+      "summary": "High-pressure environments, team leadership, and disciplined execution under operational constraints.",
+      "stack": [
+        "Leadership",
+        "Team Ops",
+        "Field Readiness",
+        "Comms Discipline"
+      ],
+      "responsibilities": [
+        "Served over six years with excellent punctuality, completing every task to standard.",
+        "Responded swiftly and calmly to hostile activity, collaborating with fellow troops to defuse situations while minimizing damage to essential supplies.",
+        "Guided and mentored junior personnel, instructing their fitness routines and workouts.",
+        "Participated in multiple fitness events, including the Malé area fitness challenge, maintaining a high score in basic fitness tests throughout my career.",
+        "Completed the Marine Corps Basic Course (2020); earned a Tan Belt in Marine Corps martial arts and Silver level in military rescue swimming."
+      ]
+    },
+    {
+      "role": "IT Technician",
+      "organization": "Reef Sand Maldives Pvt Ltd",
+      "location": "Malé, Maldives",
+      "startDate": "2014-01",
+      "endDate": "2016-02",
+      "summary": "Resolved end-user issues, documented fixes, and delivered small web projects as a solo builder.",
+      "stack": [
+        "Windows Admin",
+        "Helpdesk",
+        "Networking Basics",
+        "Web Essentials"
+      ],
+      "responsibilities": [
+        "Investigated computer hardware and software issues and recommended effective solutions.",
+        "Explained technical details clearly to non-technical individuals for better understanding.",
+        "Assisted with diagnosis of software and hardware issues and concerns.",
+        "Designed online advertisements and contributed to several graphic-design projects.",
+        "Worked on several web-development projects as a self-employed designer."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "qualification": "BSc (Hons) Computer Science",
+      "result": "First Class Honours",
+      "institution": "University of the West of England (UWE Bristol), via Villa College",
+      "location": "Malé, Maldives",
+      "startYear": "2022",
+      "endDate": "2025-09",
+      "coursework": [
+        "Advanced Software Development",
+        "Group Software Development Project",
+        "Databases & SQL",
+        "Networks & Security",
+        "Algorithms & Data Structures"
+      ]
+    },
+    {
+      "qualification": "Diploma in Computer Science",
+      "result": "",
+      "institution": "Villa College / UWE Bristol",
+      "location": "Malé, Maldives",
+      "startYear": "2022",
+      "endDate": "2023"
+    },
+    {
+      "qualification": "Certificate Level 3 in Information Technology",
+      "result": "",
+      "institution": "CYRYX College",
+      "location": "Malé, Maldives",
+      "startYear": "2012-01",
+      "endDate": "2012-06"
+    },
+    {
+      "qualification": "Secondary Education (Grades 7-10)",
+      "result": "",
+      "institution": "Islamic Arabic School",
+      "location": "Malé, Maldives",
+      "startYear": "2009",
+      "endDate": "2012"
+    },
+    {
+      "qualification": "Primary Education (Grades 1-6)",
+      "result": "",
+      "institution": "Madhrasath Sa'd bin Ubaadah",
+      "location": "Madinah, Saudi Arabia",
+      "startYear": "",
+      "endDate": ""
+    }
+  ],
+  "serviceAndAwards": [
+    {
+      "name": "Marine Corps Basic Course",
+      "issuer": "Maldives National Defence Force",
+      "year": "2020"
+    },
+    {
+      "name": "Rescue Swimming — Silver Standard",
+      "issuer": "Life Saving · MNDF",
+      "year": "2017"
+    },
+    {
+      "name": "Tan Belt — Marine Corps Martial Arts",
+      "issuer": "Maldives National Defence Force",
+      "year": "2017"
+    }
+  ],
+  "militaryService": {
+    "branch": "Maldives National Defence Force — Marine Corps",
+    "branchShort": "MNDF Marine Corps",
+    "period": "2016-03 — 2022",
+    "rank": "Lance Corporal",
+    "rankShort": "LCpl",
+    "qualification": "Expert",
+    "qualificationAwards": 3,
+    "basicFitnessTest": {
+      "score": "280+",
+      "max": "300",
+      "percent": 93
+    },
+    "summary": "Six years in uniform. Trained to operate under load, to lead small teams, and to make calm decisions under pressure.",
+    "pillars": [
+      {
+        "word": "Discipline",
+        "meaning": "standards held when no one is watching"
+      },
+      {
+        "word": "Composure",
+        "meaning": "calm under load, clarity in chaos"
+      },
+      {
+        "word": "Team",
+        "meaning": "mission before self, peer before mission"
+      },
+      {
+        "word": "Execute",
+        "meaning": "finish what you start, debrief what you finish"
+      }
+    ],
+    "courses": [
+      {
+        "title": "Marine Corps Basic Course",
+        "org": "MNDF Marine Corps",
+        "detail": "foundational warfighting, drill, field ops"
+      },
+      {
+        "title": "MCMAP — Tan Belt",
+        "org": "Marine Corps Martial Arts Program",
+        "detail": "fundamental techniques, close combat"
+      },
+      {
+        "title": "Rescue Swimming — Bronze",
+        "org": "MNDF Marine Corps",
+        "detail": "open-water rescue, survival swim"
+      },
+      {
+        "title": "Rescue Swimming — Silver",
+        "org": "MNDF Marine Corps",
+        "detail": "advanced rescue, towing, endurance"
+      }
+    ]
+  },
+  "certifications": [
+    {
+      "title": "Marine Corps Basic Course; MCMAP (Tan Belt)",
+      "issuer": "Maldives National Defence Force",
+      "date": "",
+      "category": "Training"
+    },
+    {
+      "title": "Rescue Swimming — Bronze & Silver",
+      "issuer": "Maldives National Defence Force",
+      "date": "",
+      "category": "Training"
+    },
+    {
+      "title": "Global Reporting Format (GRF) Training",
+      "issuer": "Kaadehdhoo Airport",
+      "date": "2021-06",
+      "category": "Training"
+    },
+    {
+      "title": "Management Skills Training",
+      "issuer": "Villa College — Corporate Training Division",
+      "date": "",
+      "category": "Training"
+    },
+    {
+      "title": "Driver's Licences (A0, A1, B1, B3, B4)",
+      "issuer": "",
+      "date": "Active",
+      "category": "License"
+    }
+  ],
+  "drivingLicence": {
+    "categories": [
+      "A0",
+      "A1",
+      "B1",
+      "B3",
+      "B4"
+    ]
+  },
+  "designation": "Full-Stack Developer · Military Veteran · Athlete",
+  "taglines": {
+    "profile": "Blending disciplined military precision with creative engineering to build meaningful digital experiences.",
+    "development": "Systems that scale. Code that holds the line.",
+    "education": "Computer Science · Technical Foundations · Operational Training"
+  },
+  "socialLinks": {
+    "portfolio": "https://zouriel.com",
+    "github": "https://github.com/Zouriel",
+    "telegram": "https://t.me/AerisCorbett",
+    "instagram": "https://www.instagram.com/zourielcorbett",
+    "facebook": "https://www.facebook.com/share/16UeLZKDHU/",
+    "discordServer": "https://discord.gg/xkQ5bEzU",
+    "strava": "https://strava.app.link/purJE6Rb0Xb"
+  },
+  "portfolioSkillRatings": {
+    "note": "Self-declared proficiency and years from the portfolio's development.data (kept separate from the evidence-based technicalSkills levels above).",
+    "languages": [
+      {
+        "name": "TypeScript",
+        "level": "Advanced",
+        "years": 3
+      },
+      {
+        "name": "JavaScript",
+        "level": "Advanced",
+        "years": 3
+      },
+      {
+        "name": "C#",
+        "level": "Advanced",
+        "years": 2
+      },
+      {
+        "name": "SQL (T-SQL / PostgreSQL)",
+        "level": "Advanced",
+        "years": 2
+      },
+      {
+        "name": "PHP (Laravel)",
+        "level": "Advanced",
+        "note": "national portal backend"
+      },
+      {
+        "name": "Go (Gin)",
+        "level": "Working",
+        "years": 0.5
+      }
+    ],
+    "frontEnd": [
+      {
+        "name": "Angular",
+        "level": "Advanced",
+        "years": 3,
+        "note": "Angular 16–22, SSR"
+      },
+      {
+        "name": "Next.js / React",
+        "level": "Advanced",
+        "note": "App Router, Auth.js"
+      },
+      {
+        "name": "Tailwind CSS",
+        "level": "Advanced"
+      }
+    ],
+    "backEnd": [
+      {
+        "name": "Laravel",
+        "level": "Advanced",
+        "note": "national-scale APIs"
+      },
+      {
+        "name": ".NET / ASP.NET",
+        "level": "Advanced"
+      },
+      {
+        "name": "Node / Express",
+        "level": "Working"
+      }
+    ],
+    "dataAndInfra": [
+      {
+        "name": "PostgreSQL",
+        "level": "Advanced"
+      },
+      {
+        "name": "SQL Server",
+        "level": "Working"
+      },
+      {
+        "name": "Docker",
+        "level": "Working"
+      },
+      {
+        "name": "MinIO (S3)",
+        "level": "Working"
+      }
+    ]
+  },
+  "interests": [
+    "Fitness & Anatomy",
+    "Carpentry",
+    "Welding",
+    "Social Media"
+  ],
+  "sourceNotes": [
+    "Merged with content from the live portfolio's src/app/data/*.data.ts.",
+    "Date discrepancies between the CV PDF and the portfolio data: MWSC start (CV 2024-04 vs portfolio 2024-03); IT Technician end (CV 2016-02 vs portfolio 2018). CV values retained above.",
+    "The portfolio's education.data lists several older training certificates (e.g. Basic Seamanship 1994, Diesel Engine Repair 1998, Airport Emergency Exercise 1999) whose dates predate the 1996 date of birth; these appear to be placeholder/erroneous records and were omitted from certifications pending verification."
+  ]
+}

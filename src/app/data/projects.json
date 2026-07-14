@@ -1,0 +1,1390 @@
+{
+  "projects": [
+    {
+      "name": "HEMS — Higher Education Management System",
+      "description": "A scholarship and higher-education management platform for the Ministry of Higher Education, Maldives, handling schemes, student requests and applications, selection workflows, fund-utilization vouchers, and institute bank-account management. Built as a domain-driven shared core package consumed by separate admin and student REST APIs, with two Next.js portals. Integrates the national eFaas single sign-on for student authentication and a full observability stack.",
+      "projectType": "Government web platform",
+      "organization": "MoHE-HEMS",
+      "client": "Ministry of Higher Education, Maldives",
+      "industry": "Government / Higher Education",
+      "status": "active",
+      "duration": {
+        "start": "2025-05",
+        "end": "present"
+      },
+      "repositories": [
+        {
+          "name": "hems-core",
+          "url": "https://github.com/MoHE-HEMS/hems-core",
+          "visibility": "private"
+        },
+        {
+          "name": "hems-admin-api",
+          "url": "https://github.com/MoHE-HEMS/hems-admin-api",
+          "visibility": "private"
+        },
+        {
+          "name": "hems-student-api",
+          "url": "https://github.com/MoHE-HEMS/hems-student-api",
+          "visibility": "private"
+        },
+        {
+          "name": "hems-webapps",
+          "url": "https://github.com/MoHE-HEMS/hems-webapps",
+          "visibility": "private"
+        },
+        {
+          "name": "infra-cloudmv-go",
+          "url": "https://github.com/MoHE-HEMS/infra-cloudmv-go",
+          "visibility": "private"
+        },
+        {
+          "name": "ansible-deployments",
+          "url": "https://github.com/MoHE-HEMS/ansible-deployments",
+          "visibility": "private"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Next.js 15",
+          "React 19",
+          "TypeScript",
+          "Tailwind CSS",
+          "TanStack Query",
+          "TanStack Table",
+          "React Hook Form",
+          "Zod",
+          "NextAuth v5"
+        ],
+        "backend": [
+          "PHP 8.2+",
+          "Laravel",
+          "Laravel Sanctum",
+          "spatie/laravel-permission",
+          "Spatie Laravel Data",
+          "Gotenberg",
+          "DocuSign eSign",
+          "MS Graph mail"
+        ],
+        "database": [
+          "MySQL",
+          "MongoDB",
+          "Redis"
+        ],
+        "infrastructure": [
+          "Pulumi (Go SDK)",
+          "Huawei Cloud",
+          "Ansible",
+          "Docker Compose",
+          "nginx",
+          "AWS S3"
+        ],
+        "tools": [
+          "Turborepo",
+          "pnpm",
+          "Pest",
+          "Laravel Pint",
+          "Jest",
+          "Cypress",
+          "OpenTelemetry",
+          "Sentry",
+          "Laravel Telescope",
+          "Scramble"
+        ],
+        "other": [
+          "eFaas national SSO",
+          "RBAC",
+          "workflow/state-machine engine"
+        ]
+      },
+      "role": "Full-stack developer (core team)",
+      "teamSize": 10,
+      "responsibilities": [
+        "Developed features end-to-end across the shared core package, admin API, student API, and Next.js frontends",
+        "Implemented request/application lifecycle and status-workflow logic",
+        "Built forms and shared validation for institute and student bank-account management",
+        "Fixed audit/activity-log and payment-voucher defects"
+      ],
+      "myContributions": [
+        "Implemented the 15-day inactivity auto-expiry (Expired outcome) for student requests and applications end-to-end",
+        "Added SWIFT and clearing-code handling plus vendor-form upload to institute/student bank-account forms",
+        "Implemented course-duration derivation (years/months/days, course end date) in the student API and core",
+        "Added scheme-management improvements including draft exclusion from default listings and draft-count badges",
+        "Resolved a PaymentVoucher activity-log exception surfaced via Sentry"
+      ],
+      "majorFeatures": [
+        "Scholarship scheme management",
+        "Student requests and applications with workflow/state-machine engine",
+        "Selection process and fund-utilization payment vouchers",
+        "Institute bank-account management with vendor/document forms",
+        "eFaas national SSO for student login",
+        "Document generation (Gotenberg/PhpWord) and DocuSign e-signature",
+        "Activity/audit logging and MS Graph email notifications"
+      ],
+      "architecture": [
+        "Domain-driven shared core package holds all business logic without HTTP or auth concerns",
+        "Two thin REST APIs (admin, student) consume the core package",
+        "Separate admin and student Next.js portals in a single Turborepo/pnpm monorepo",
+        "MySQL primary store with MongoDB for audit data and Redis for cache/queue",
+        "Infrastructure provisioned with Pulumi on Huawei Cloud and deployed via Ansible"
+      ],
+      "achievements": [
+        "Consistent top-five contributor across all four application repositories and second-highest on the student API and frontend monorepo",
+        "Delivered coordinated full-stack features spanning core logic, API contracts, scheduled jobs, and UI"
+      ],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "high",
+        "uncertainFields": [
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation",
+          "duration.end"
+        ]
+      }
+    },
+    {
+      "name": "zcoms",
+      "description": "A scriptable command-line comms platform (the zc binary) that drives Telegram (TDLib), WhatsApp (Baileys), and Instagram from the terminal, with an AI agent layer that orchestrates LLM-backed agents (Claude/Codex) directly from the owner's chats. The agent tier runs a role-separated multi-agent pipeline — an Interviewer collects information, a Guard screens it for prompt-injection and unsafe content, and a Producer builds and delivers the result — alongside triage, scheduling, and per-persona prompt management. It grew into a layered ecosystem around local IPC sockets, adding team coordination, an Angular admin console, and a Telegram Stars commerce platform, with tiers communicating only through published Go client packages.",
+      "projectType": "AI agent platform / CLI tool",
+      "organization": "",
+      "client": "",
+      "industry": "Developer Tools / Communications",
+      "status": "active",
+      "duration": {
+        "start": "2026-05",
+        "end": "present"
+      },
+      "repositories": [
+        {
+          "name": "zcoms",
+          "url": "https://github.com/Zouriel/zcoms",
+          "visibility": "public"
+        },
+        {
+          "name": "zcoms-agent",
+          "url": "https://github.com/Zouriel/zcoms-agent",
+          "visibility": "public"
+        },
+        {
+          "name": "zcoms-console",
+          "url": "https://github.com/Zouriel/zcoms-console",
+          "visibility": "public"
+        },
+        {
+          "name": "zcoms-team",
+          "url": "https://github.com/Zouriel/zcoms-team",
+          "visibility": "public"
+        },
+        {
+          "name": "zcoms-commerce",
+          "url": "https://github.com/Zouriel/zcoms-commerce",
+          "visibility": "public"
+        },
+        {
+          "name": "zcoms-commerce-runtime",
+          "url": "https://github.com/Zouriel/zcoms-commerce-runtime",
+          "visibility": "public"
+        },
+        {
+          "name": "zcoms-skill",
+          "url": "https://github.com/Zouriel/zcoms-skill",
+          "visibility": "public"
+        },
+        {
+          "name": "zcoms-sdk",
+          "url": "https://github.com/Zouriel/zcoms-sdk",
+          "visibility": "public"
+        },
+        {
+          "name": "zcoms-bridge",
+          "url": "https://github.com/Zouriel/zcoms-bridge",
+          "visibility": "public"
+        },
+        {
+          "name": "zcoms-triage",
+          "url": "https://github.com/Zouriel/zcoms-triage",
+          "visibility": "public"
+        },
+        {
+          "name": "zcoms-errands",
+          "url": "https://github.com/Zouriel/zcoms-errands",
+          "visibility": "public"
+        },
+        {
+          "name": "zc-commerce",
+          "url": "https://github.com/Zouriel/zc-commerce",
+          "visibility": "private"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Angular 22 (standalone, signals) admin console",
+          "In-house ui component library (consumed via file:libs/ui)",
+          "TypeScript ~6.0",
+          "Compiled and embedded into the Go binary via go:embed"
+        ],
+        "backend": [
+          "Go 1.25",
+          "TDLib (libtdjson, cgo) for Telegram",
+          "Baileys WhatsApp sidecar",
+          "Instagram sidecar (Python)",
+          "Telegram Bot API"
+        ],
+        "database": [
+          "SQLite (modernc.org/sqlite)",
+          "PostgreSQL (jackc/pgx)"
+        ],
+        "infrastructure": [
+          "Unix/named-socket IPC",
+          "systemd user services",
+          "Docker",
+          "docker-compose",
+          "Caddy"
+        ],
+        "tools": [
+          "golangci-lint",
+          "pre-commit",
+          "Air (live reload)",
+          "Angular CLI 22",
+          "Makefile",
+          "GitHub Actions"
+        ],
+        "other": [
+          "Multi-agent orchestration (Interviewer/Guard/Producer pipeline)",
+          "LLM backend abstraction (Claude Code / Codex CLIs)",
+          "Prompt engineering (per-persona seeds + dynamic context injection)",
+          "Prompt-injection guardrails (Guard agent + store-guard permission model)",
+          "Claude Agent Skill",
+          "AES-256-GCM token encryption",
+          "bcrypt",
+          "HMAC-signed sessions and event outbox"
+        ]
+      },
+      "role": "Sole developer and architect",
+      "teamSize": 1,
+      "responsibilities": [
+        "Designed and built the AI agent layer that orchestrates LLM-backed agents from the owner's chats",
+        "Designed and built the entire multi-tier comms and commerce ecosystem",
+        "Owned the TDLib session, WhatsApp sidecar integration, and IPC protocol",
+        "Engineered prompt-injection guardrails across the agent pipeline and data stores",
+        "Built and maintained release packaging and deployment tooling"
+      ],
+      "myContributions": [
+        "Built a role-separated multi-agent errand pipeline (Interviewer collects, Guard screens for unsafe/injected content, Producer builds and delivers)",
+        "Implemented an LLM backend abstraction supporting Claude Code and Codex CLIs with per-task backend routing, turn timeouts, and bounded output capture",
+        "Built a persona system storing per-agent seed prompts with dynamic runtime context injection, editable without code changes",
+        "Designed a store-guard permission model separating owner-only and agent-writable fields so a prompt-injected agent cannot alter its own seed, allowlist, or config",
+        "Built an AI triage agent that classifies unread Telegram/WhatsApp/Instagram messages and DMs the owner a prioritized digest",
+        "Built the single-session TDLib daemon serving all tiers over a versioned IPC wire protocol with blocking ask/chat primitives for human-in-the-loop AI",
+        "Built an Angular 22 admin console (13 screens) that proxies the comms, agent, and commerce sockets and is compiled and embedded into a pure-Go binary via go:embed",
+        "Added Instagram as a third messaging transport via a Python sidecar alongside Telegram and WhatsApp",
+        "Built the Telegram Stars commerce runtime routing all merchant bots through one shared webhook with idempotent payments and refunds"
+      ],
+      "majorFeatures": [
+        "AI agent layer orchestrating Claude/Codex agents from the owner's Telegram/WhatsApp/Instagram chats",
+        "Multi-agent errand pipeline with Interviewer, Guard (safety screening), and Producer stages",
+        "AI message triage with prioritized digests and interactive follow-up",
+        "Scheduled agent errands, reminders, and automated standups with persona-driven prompts",
+        "Terminal-driven Telegram, WhatsApp, and Instagram messaging and media",
+        "Angular 22 admin console (contacts, messages, personas, allowlist, settings, triage, errands, reminders, commerce, and more)",
+        "Telegram Stars commerce platform with hosted merchant bots and billing lifecycle"
+      ],
+      "architecture": [
+        "Strict three-tier design where tiers communicate only through published Go client packages",
+        "AI layer owns agent.db and runs pluggable LLM backends (Claude/Codex) behind a per-task routing config",
+        "Multi-agent pipeline enforces role separation — the Interviewer has no shell/filesystem access, and a Guard stage screens collected input before the Producer acts",
+        "Store-guard permission model (owner vs agent callers) hardens every write against prompt injection",
+        "Comms core owns the single Telegram session, WhatsApp/Instagram sidecars, and comms.db over local IPC",
+        "Angular admin console is built to static assets and embedded in a localhost-only Go binary via go:embed, reaching every store through the guarded clients",
+        "Commerce split into a control plane (admin) and a VPS data plane treating bots as data behind one shared webhook"
+      ],
+      "achievements": [
+        "Built a production, self-hosted agentic system with explicit prompt-injection defenses (dedicated Guard agent plus a caller-aware store guard)",
+        "Consolidated separate bridge, triage, and errands services into a single pure-Go agent binary",
+        "Delivered a pure-Go persistence path (modernc SQLite) avoiding cgo outside the Telegram core"
+      ],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "high",
+        "uncertainFields": [
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation",
+          "duration.end"
+        ]
+      }
+    },
+    {
+      "name": "VerifyPortal",
+      "description": "A document data-extraction and verification portal where users upload documents, an OCR pipeline extracts structured data against configurable presets, and results are returned through a web UI or a public agent API. Includes accounts, Google sign-in, API keys, batch processing, Excel/PDF export, and a prepaid credits/billing model. The backend follows Clean Architecture with CQRS, and public sign-up is gated behind an allowlist pending payment-provider integration.",
+      "projectType": "SaaS web application",
+      "organization": "",
+      "client": "",
+      "industry": "SaaS / Document Processing",
+      "status": "active",
+      "duration": {
+        "start": "2026-05",
+        "end": "present"
+      },
+      "repositories": [
+        {
+          "name": "VerifyPortal-backend",
+          "url": "https://github.com/Zouriel/VerifyPortal-backend",
+          "visibility": "private"
+        },
+        {
+          "name": "VerifyPortal-frontend",
+          "url": "https://github.com/Zouriel/VerifyPortal-frontend",
+          "visibility": "private"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Angular 18.2 (standalone)",
+          "TypeScript 5.5",
+          "RxJS",
+          "Lucide icons",
+          "exceljs/xlsx",
+          "jsPDF"
+        ],
+        "backend": [
+          ".NET 8",
+          "C#",
+          "MediatR (CQRS)",
+          "FluentValidation",
+          "EF Core 8",
+          "Hangfire",
+          "Serilog",
+          "Polly",
+          "ASP.NET Identity",
+          "JWT"
+        ],
+        "database": [
+          "PostgreSQL (Npgsql)"
+        ],
+        "infrastructure": [
+          "Docker (multi-stage)",
+          "nginx",
+          "MinIO / S3 object storage"
+        ],
+        "tools": [
+          "Swagger/Swashbuckle",
+          "prometheus-net",
+          "Testcontainers",
+          "Playwright",
+          "ESLint",
+          "Prettier",
+          "Central Package Management"
+        ],
+        "other": [
+          "Argon2id password hashing",
+          "AES-GCM encryption",
+          "Google token validation",
+          "credits/billing model"
+        ]
+      },
+      "role": "Primary developer",
+      "teamSize": 2,
+      "responsibilities": [
+        "Designed and built the Clean Architecture .NET backend and Angular frontend",
+        "Implemented authentication, API keys, and access gating",
+        "Built the OCR extraction workflow and result-editing UI",
+        "Set up integration testing infrastructure"
+      ],
+      "myContributions": [
+        "Implemented an access gate with allowlist and a prepaid balance ledger, including 402/403/409 error handling",
+        "Built admin privileged-email CRUD and a credit-balance management UI",
+        "Implemented cursor and offset pagination with an export-range picker",
+        "Built structured, editable result modals and a two-column auto-extract page",
+        "Fixed Google FedCM login and Swagger proxying"
+      ],
+      "majorFeatures": [
+        "Document upload with preset-based structured extraction",
+        "Public agent API with API keys",
+        "Batch processing and Excel/PDF export",
+        "Google sign-in and account management",
+        "Prepaid credits and billing model"
+      ],
+      "architecture": [
+        "Clean Architecture backend with enforced Domain to Application to Infrastructure to Api dependency rule",
+        "CQRS via MediatR with FluentValidation",
+        "Hangfire background jobs backed by PostgreSQL",
+        "MinIO/S3 object storage for documents",
+        "Containerized backend and nginx-served Angular frontend"
+      ],
+      "achievements": [
+        "Backend integration suite reported at 122 passing tests using Testcontainers across PostgreSQL, MinIO, and a payment mock"
+      ],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "high",
+        "uncertainFields": [
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation",
+          "duration.end"
+        ]
+      }
+    },
+    {
+      "name": "invites.blog",
+      "description": "A premium animated digital-invitation platform where inviters create personalized, role-aware invites without an account and invitees open a unique link to RSVP with zero login. It uses a manifest-driven template system so new template fields render automatically without code changes, with strong privacy guarantees (possession tokens, only hashed token storage, sandboxed invitee rendering). Mid-development it pivoted to a made-to-order bespoke inquiry pipeline (inquire, design, refine, deliver).",
+      "projectType": "Web application",
+      "organization": "",
+      "client": "",
+      "industry": "Events / Digital Invitations",
+      "status": "active",
+      "duration": {
+        "start": "2026-07",
+        "end": "present"
+      },
+      "repositories": [
+        {
+          "name": "invites-blog-frontend",
+          "url": "https://github.com/Zouriel/invites-blog-frontend",
+          "visibility": "public"
+        },
+        {
+          "name": "invites-blog-backend",
+          "url": "https://github.com/Zouriel/invites-blog-backend",
+          "visibility": "public"
+        },
+        {
+          "name": "invites-blog-deploy",
+          "url": "https://github.com/Zouriel/invites-blog-deploy",
+          "visibility": "public"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Angular 22 (standalone, signals)",
+          "TypeScript ~6.0",
+          "@angular/cdk",
+          "@angular/aria",
+          "pdfjs-dist",
+          "RxJS"
+        ],
+        "backend": [
+          ".NET 10",
+          "ASP.NET Core",
+          "EF Core 10",
+          "Scrutor"
+        ],
+        "database": [
+          "PostgreSQL 17"
+        ],
+        "infrastructure": [
+          "Docker Compose",
+          "Caddy reverse proxy",
+          "nginx",
+          "MinIO / S3 storage"
+        ],
+        "tools": [
+          "Angular CLI 22",
+          "ng-packagr 22",
+          "Vitest 4",
+          "xUnit",
+          "Prettier"
+        ],
+        "other": [
+          "RBAC",
+          "Resend email/OTP",
+          "Stripe payments",
+          "sandboxed iframe + strict CSP"
+        ]
+      },
+      "role": "Sole developer",
+      "teamSize": 1,
+      "responsibilities": [
+        "Designed and built the Angular frontend, .NET backend, and deployment topology",
+        "Implemented the manifest-driven template and personalization system",
+        "Built the accountless token-based invitation and RSVP flow",
+        "Implemented privacy, data-removal, and retention features"
+      ],
+      "myContributions": [
+        "Built a manifest-driven builder that auto-renders a template's declared fields and image slots without code changes",
+        "Implemented a template compiler and trusted injector with server-side personalization",
+        "Built an accountless flow using possession tokens and magic links, storing only 256-bit token hashes",
+        "Rendered invitee templates in a sandboxed allow-scripts iframe under strict CSP",
+        "Implemented the made-to-order inquiry pipeline with admin triage and email-OTP template claiming"
+      ],
+      "majorFeatures": [
+        "Accountless invitation creation and zero-login RSVP",
+        "Manifest-driven dynamic invitation builder",
+        "Made-to-order inquiry and delivery pipeline",
+        "Tokenized self-service data removal with retention auto-delete worker",
+        "Email OTP delivery via Resend with idempotent webhook handling"
+      ],
+      "architecture": [
+        "Angular 22 workspace with two SPAs (inviter, invitee) and a shared UI library built first",
+        "Layered .NET 10 backend (Domain, Application, Infrastructure, Api, TemplateCompiler, Worker) on PostgreSQL",
+        "Pluggable providers for storage (Local/MinIO), email (Console/Resend), and payments (fake/Stripe)",
+        "Docker Compose with Caddy reverse proxy and same-origin /api and /assets proxying"
+      ],
+      "achievements": [
+        "Backend test suite reported at 138 tests",
+        "Privacy-first design storing only hashed possession tokens and rendering guest content as text, never markup"
+      ],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "high",
+        "uncertainFields": [
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation",
+          "duration.end"
+        ]
+      }
+    },
+    {
+      "name": "Lektrus",
+      "description": "A full-stack class-scheduling and education platform (branded Lektrus in production) covering class sessions, attendance tracking, and student assignment submissions with a calendar-based UX. The backend uses Clean Architecture on .NET 9 and the frontend is an Angular SSR application with PWA support and PDF/Excel report export. It is Dockerized with MinIO object storage and deployed to a VPS via GitHub Actions.",
+      "projectType": "Web application",
+      "organization": "",
+      "client": "",
+      "industry": "Education / EdTech",
+      "status": "active",
+      "duration": {
+        "start": "2026-03",
+        "end": "2026-05"
+      },
+      "repositories": [
+        {
+          "name": "classFlow",
+          "url": "https://github.com/Zouriel/classFlow",
+          "visibility": "private"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Angular 21 (SSR / Universal)",
+          "Express 5",
+          "PWA / service worker",
+          "HugeIcons",
+          "jsPDF",
+          "jspdf-autotable",
+          "xlsx"
+        ],
+        "backend": [
+          ".NET 9",
+          "ASP.NET Core",
+          "EF Core",
+          "ASP.NET Identity",
+          "JWT",
+          "FluentValidation"
+        ],
+        "database": [
+          "PostgreSQL 16"
+        ],
+        "infrastructure": [
+          "Docker",
+          "docker-compose",
+          "MinIO object storage",
+          "GitHub Actions (VPS deploy)"
+        ],
+        "tools": [
+          "Swagger",
+          "DataProtection key persistence"
+        ],
+        "other": [
+          "multi-tenancy (batch/institute)",
+          "RBAC"
+        ]
+      },
+      "role": "Sole developer",
+      "teamSize": 1,
+      "responsibilities": [
+        "Designed and built the Clean Architecture .NET 9 backend and Angular 21 SSR frontend",
+        "Implemented class scheduling, attendance, and assignment submission",
+        "Set up Dockerized deployment with MinIO and CI/CD",
+        "Hardened authorization on student-facing endpoints"
+      ],
+      "myContributions": [
+        "Implemented class session scheduling with a calendar UX",
+        "Built attendance tracking and student assignment submissions",
+        "Implemented daily-limited attachment uploads backed by MinIO",
+        "Added batch/institute multi-tenancy and module color picker",
+        "Fixed an authorization bypass on the student-assignments endpoint"
+      ],
+      "majorFeatures": [
+        "Class scheduling and calendar management",
+        "Attendance tracking",
+        "Student assignment submissions with attachment uploads",
+        "PDF/Excel report export",
+        "Batch/institute multi-tenancy"
+      ],
+      "architecture": [
+        "Clean Architecture backend (Api, Application, Domain, Infrastructure) on .NET 9 and PostgreSQL",
+        "Angular 21 SSR frontend with PWA support",
+        "MinIO object storage for attachments",
+        "Dockerized production stack deployed to a VPS via GitHub Actions"
+      ],
+      "achievements": [
+        "Production-deployed under the Lektrus brand with automated CI/CD"
+      ],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "high",
+        "uncertainFields": [
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation"
+        ]
+      }
+    },
+    {
+      "name": "IMS — Inventory Management System",
+      "description": "A full-stack inventory management system with an admin dashboard covering products, stock counts, asset/tag tracking, and borrows/transfers between stores, plus role-based store and user dashboards. The Angular frontend uses NgRx state management and Azure MSAL authentication, and the .NET 8 backend adds an ML.NET-powered suggested-items feature on SQL Server. It is the longest-running of the solo full-stack projects.",
+      "projectType": "Web application",
+      "organization": "MWSC",
+      "client": "MWSC",
+      "industry": "Enterprise Software / Inventory",
+      "status": "completed",
+      "duration": {
+        "start": "2025-02",
+        "end": "2026-03"
+      },
+      "repositories": [
+        {
+          "name": "IMS-FrontEnd",
+          "url": "https://github.com/Zouriel/IMS-FrontEnd",
+          "visibility": "private"
+        },
+        {
+          "name": "IMS-BackEnd",
+          "url": "https://github.com/Zouriel/IMS-BackEnd",
+          "visibility": "private"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Angular 18",
+          "SCSS",
+          "Bootstrap 5.3",
+          "NgRx (store/effects)",
+          "Angular Material CDK",
+          "ApexCharts/ECharts/Chart.js",
+          "ngx-translate"
+        ],
+        "backend": [
+          ".NET 8",
+          "ASP.NET Core Web API",
+          "EF Core 8",
+          "Castle.Windsor",
+          "Microsoft.ML (ML.NET)",
+          "SixLabors.ImageSharp",
+          "JWT",
+          "BCrypt"
+        ],
+        "database": [
+          "SQL Server"
+        ],
+        "infrastructure": [],
+        "tools": [
+          "Swagger/Swashbuckle",
+          "Cypress"
+        ],
+        "other": [
+          "Azure MSAL authentication",
+          "Firebase",
+          "RBAC"
+        ]
+      },
+      "role": "Sole developer",
+      "teamSize": 1,
+      "responsibilities": [
+        "Built the Angular frontend and .NET 8 backend end-to-end",
+        "Implemented authentication and role-based dashboards",
+        "Built inventory, asset-tag, and multi-store transfer workflows",
+        "Integrated an ML.NET suggested-items feature"
+      ],
+      "myContributions": [
+        "Implemented JWT authentication with token refresh and first-time-login redirect",
+        "Built product and stock-count management",
+        "Implemented asset-tag management with ownership, visibility, and disable toggles",
+        "Built multi-store transfers with accept/decline and bulk tag requests",
+        "Built store and user dashboards and a suggested-items feature"
+      ],
+      "majorFeatures": [
+        "Product and stock-count management",
+        "Asset/tag tracking with ownership and visibility controls",
+        "Multi-store transfers and borrows",
+        "Role-based store and user dashboards",
+        "ML.NET suggested items"
+      ],
+      "architecture": [
+        "Angular 18 SPA with NgRx state management",
+        "Azure MSAL and Firebase-based authentication",
+        "ASP.NET Core Web API with Castle.Windsor dependency injection on SQL Server"
+      ],
+      "achievements": [],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "high",
+        "uncertainFields": [
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation"
+        ]
+      }
+    },
+    {
+      "name": "Angular UI Library",
+      "description": "A token-driven, signal-first Angular v22 component library of roughly 110 standalone, zoneless, tree-shakeable components across 33 secondary entry points, with dark/light/cinematic themes plus additional accent palettes. Flagship components include a floating window system and a multi-format file viewer, alongside a motion/FX layer. It ships with a routed documentation and showcase site and Docker/nginx production configuration.",
+      "projectType": "Library / developer tool",
+      "organization": "",
+      "client": "",
+      "industry": "Developer Tools / UI",
+      "status": "active",
+      "duration": {
+        "start": "2026-06",
+        "end": "present"
+      },
+      "repositories": [
+        {
+          "name": "angular-ui-library",
+          "url": "https://github.com/Zouriel/angular-ui-library",
+          "visibility": "public"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Angular 22 (standalone, zoneless, signals)",
+          "@angular/cdk",
+          "@angular/aria",
+          "TypeScript ~6.0",
+          "pdfjs-dist",
+          "RxJS"
+        ],
+        "backend": [],
+        "database": [],
+        "infrastructure": [
+          "Docker",
+          "nginx"
+        ],
+        "tools": [
+          "Angular CLI 22",
+          "ng-packagr 22",
+          "Vitest 4",
+          "Prettier"
+        ],
+        "other": [
+          "CSS design tokens",
+          "ControlValueAccessor form controls",
+          "Signal Forms",
+          "MIT licensed"
+        ]
+      },
+      "role": "Sole developer",
+      "teamSize": 1,
+      "responsibilities": [
+        "Designed and built the entire component library and its theming system",
+        "Built flagship components and the motion/FX layer",
+        "Packaged the library with secondary entry points",
+        "Built the routed documentation and showcase site"
+      ],
+      "myContributions": [
+        "Built ~110 standalone components across 33 secondary entry points",
+        "Implemented a tokens-only styling system where a theme is a set of CSS custom-property overrides keyed on data-theme",
+        "Built the ui-window floating window system with drag/snap/resize/dock and a window manager",
+        "Built the ui-file-viewer supporting image/video/audio/text/code and lazy PDF",
+        "Added multiple accent palettes with per-family signature animations switchable at runtime"
+      ],
+      "majorFeatures": [
+        "Token-driven theming with dark, light, and cinematic themes plus accent palettes",
+        "Floating window system",
+        "Multi-format file viewer with lazy PDF",
+        "Motion/FX layer (scroll reveal, custom cursor, marquee, split-text, and more)",
+        "Routed documentation/showcase site with live demos and API tables"
+      ],
+      "architecture": [
+        "Standalone, zoneless, signal-first Angular 22 with no NgModules",
+        "Secondary entry points so consumers import only what they use",
+        "Tokens-only styling where each component reads CSS custom properties",
+        "Optional library-wide defaults via provideUiConfig"
+      ],
+      "achievements": [
+        "Confirmed 33 secondary entry points and a comprehensive themeable, accessible component set"
+      ],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "high",
+        "uncertainFields": [
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation",
+          "duration.end"
+        ]
+      }
+    },
+    {
+      "name": "MOTCA Domain",
+      "description": "A government land/property domain registry and permitting system, built around Maldivian administrative geography (atolls, islands, zones) with domain registries, permits, applications, workflow, invoicing, and audit trails. The .NET 9 backend exposes roughly 28 controllers over a polyglot persistence design (PostgreSQL, MongoDB for audit logs, MinIO for files), and the Angular 20 SSR frontend integrates the national eFaas identity provider. The GitHub history is squashed to import commits, but the codebase is substantial.",
+      "projectType": "Government web platform",
+      "organization": "",
+      "client": "Ministry of Tourism & Civil Aviation, Maldives",
+      "industry": "Government",
+      "status": "completed",
+      "duration": {
+        "start": "2026-02",
+        "end": "2026-02"
+      },
+      "repositories": [
+        {
+          "name": "motca-domain-api",
+          "url": "https://github.com/Zouriel/motca-domain-api",
+          "visibility": "private"
+        },
+        {
+          "name": "motca-domain-webapp",
+          "url": "https://github.com/Zouriel/motca-domain-webapp",
+          "visibility": "private"
+        },
+        {
+          "name": "motca-domain",
+          "url": "https://github.com/Zouriel/motca-domain",
+          "visibility": "private"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Angular 20.1 (SSR)",
+          "Express 5",
+          "TypeScript 5.8",
+          "Tailwind CSS 3.4",
+          "Hugeicons"
+        ],
+        "backend": [
+          ".NET 9",
+          "C#",
+          "EF Core 9",
+          "JWT",
+          "Bogus"
+        ],
+        "database": [
+          "PostgreSQL",
+          "MongoDB",
+          "MinIO"
+        ],
+        "infrastructure": [
+          "Docker Compose (API, webapp, PostgreSQL 16, MinIO, MongoDB 8)"
+        ],
+        "tools": [
+          "Swagger/Swashbuckle"
+        ],
+        "other": [
+          "eFaas national SSO",
+          "workflow engine",
+          "roles/permissions",
+          "audit logging with retention policies"
+        ]
+      },
+      "role": "Sole developer",
+      "teamSize": 1,
+      "responsibilities": [
+        "Built the .NET 9 backend, Angular 20 SSR frontend, and Docker Compose orchestration",
+        "Modeled the domain registry, permits, and application workflow",
+        "Implemented polyglot persistence and audit logging",
+        "Integrated national eFaas identity and branding"
+      ],
+      "myContributions": [
+        "Built roughly 28 REST controllers and about 31 domain entities",
+        "Implemented a permit/registry domain model with a workflow engine and roles/permissions",
+        "Implemented polyglot persistence across PostgreSQL, MongoDB, and MinIO with configurable audit-retention",
+        "Integrated eFaas identity and Maldivian localization (Dhivehi fonts, national branding)"
+      ],
+      "majorFeatures": [
+        "Domain/land registry and permit issuance",
+        "Application processing through a workflow engine",
+        "Invoicing",
+        "eFaas national identity login",
+        "Audit logging with retention policies"
+      ],
+      "architecture": [
+        "Layered .NET 9 API (Controllers, Services, Repositories, Domain, Infrastructure, Logging)",
+        "Angular 20 SSR frontend with Tailwind CSS",
+        "Polyglot persistence: PostgreSQL relational store, MongoDB audit store, MinIO object store",
+        "Full local dev environment orchestrated via Docker Compose"
+      ],
+      "achievements": [
+        "Substantial system (~28 controllers, ~31 entities, workflow and audit) on a modern .NET 9 / Angular 20 SSR stack"
+      ],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "medium",
+        "uncertainFields": [
+          "client",
+          "duration.end",
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation"
+        ]
+      }
+    },
+    {
+      "name": "JoaliBackend",
+      "description": "A backend API for a multi-tenant service-booking platform where organizations offer bookable services and sessions, with staff roles, bookings, and payments. Built on .NET 8 with EF Core and SQL Server, it implements JWT authentication with refresh tokens, granular staff permissions, and device/session tracking. It is a standalone backend with no accompanying frontend in the account.",
+      "projectType": "Backend API",
+      "organization": "",
+      "client": "",
+      "industry": "Hospitality / Booking",
+      "status": "completed",
+      "duration": {
+        "start": "2025-02",
+        "end": "2025-05"
+      },
+      "repositories": [
+        {
+          "name": "JoaliBackend",
+          "url": "https://github.com/Zouriel/JoaliBackend",
+          "visibility": "public"
+        }
+      ],
+      "stack": {
+        "frontend": [],
+        "backend": [
+          ".NET 8",
+          "ASP.NET Core Web API",
+          "EF Core 9",
+          "JWT (with refresh tokens)",
+          "BCrypt",
+          "DeviceDetector.NET"
+        ],
+        "database": [
+          "SQL Server"
+        ],
+        "infrastructure": [],
+        "tools": [
+          "Swagger/Swashbuckle"
+        ],
+        "other": [
+          "RBAC / granular permissions"
+        ]
+      },
+      "role": "Sole developer",
+      "teamSize": 1,
+      "responsibilities": [
+        "Designed and built the multi-tenant service-booking API",
+        "Implemented authentication with refresh tokens and device tracking",
+        "Built organization, service, and booking management",
+        "Implemented staff roles and permissions"
+      ],
+      "myContributions": [
+        "Built organization CRUD with enable/disable toggling",
+        "Implemented service management and service ordering/bookings",
+        "Baked a HasBooking flag into the JWT",
+        "Implemented staff creation with role assignment and granular permissions",
+        "Built refresh-token and payment endpoints with device/session tracking"
+      ],
+      "majorFeatures": [
+        "Multi-tenant organizations and services",
+        "Service ordering/bookings",
+        "Staff roles and granular permissions",
+        "JWT auth with refresh tokens and device tracking",
+        "Payment endpoint"
+      ],
+      "architecture": [
+        "ASP.NET Core Web API with a layered structure (Controllers, DTOs, Data, Models, Migrations)",
+        "EF Core on SQL Server",
+        "JWT-based auth carrying booking state in the token"
+      ],
+      "achievements": [],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "medium",
+        "uncertainFields": [
+          "client",
+          "industry",
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation"
+        ]
+      }
+    },
+    {
+      "name": "Taskerr",
+      "description": "A real-time collaborative task and project management application with a daily planner generated from working hours, color-coded notes, and role-based teams. The Go/Gin backend uses GORM on PostgreSQL with a Gorilla WebSocket hub for live notifications, and the Angular 20 frontend consumes REST and WebSocket APIs. It was built as a short, intensive sprint.",
+      "projectType": "Web application",
+      "organization": "",
+      "client": "",
+      "industry": "Productivity",
+      "status": "completed",
+      "duration": {
+        "start": "2025-06",
+        "end": "2025-07"
+      },
+      "repositories": [
+        {
+          "name": "Taskerr_Front-end",
+          "url": "https://github.com/Zouriel/Taskerr_Front-end",
+          "visibility": "private"
+        },
+        {
+          "name": "taskerr_backend",
+          "url": "https://github.com/Zouriel/taskerr_backend",
+          "visibility": "private"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Angular 20",
+          "Bootstrap",
+          "Angular Material",
+          "RxJS/Signals",
+          "WebSocket client"
+        ],
+        "backend": [
+          "Go 1.24",
+          "Gin",
+          "GORM",
+          "Gorilla WebSocket",
+          "JWT"
+        ],
+        "database": [
+          "PostgreSQL (pgx)"
+        ],
+        "infrastructure": [],
+        "tools": [
+          "Air (hot reload)",
+          "swaggo/Swagger",
+          "godotenv"
+        ],
+        "other": [
+          "optimistic-concurrency version tracking",
+          "RBAC"
+        ]
+      },
+      "role": "Sole developer",
+      "teamSize": 1,
+      "responsibilities": [
+        "Built the Go/Gin backend and Angular 20 frontend",
+        "Implemented real-time notifications via WebSockets",
+        "Built task and project management with role-based access",
+        "Implemented concurrency control for concurrent edits"
+      ],
+      "myContributions": [
+        "Built task CRUD with tags, priorities, and color-coding",
+        "Implemented optimistic-concurrency version tracking to prevent simultaneous edits",
+        "Built projects with role-based access (Admin/Manager/Contributor)",
+        "Implemented a real-time WebSocket notification hub and inbox",
+        "Built a smart daily planner from working hours and personal color-coded notes"
+      ],
+      "majorFeatures": [
+        "Task CRUD with tags, priorities, and blocking",
+        "Projects with role-based access",
+        "Real-time WebSocket notifications and inbox",
+        "Smart daily planner",
+        "Personal color-coded notes"
+      ],
+      "architecture": [
+        "Go/Gin REST API with GORM on PostgreSQL",
+        "Gorilla WebSocket hub for real-time notifications",
+        "Angular 20 mobile-first frontend consuming REST and WebSocket APIs",
+        "Optimistic-concurrency version tracking on tasks"
+      ],
+      "achievements": [],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "high",
+        "uncertainFields": [
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation"
+        ]
+      }
+    },
+    {
+      "name": "Personal Portfolio",
+      "description": "A personal developer portfolio website built with Angular and Tailwind CSS, featuring a three.js WebGL animated background and a cinematic redesign. It includes a projects page, a military-service page, and a Telegram/Discord contact submission bubble. It is deployed via GitHub Pages and also ships Docker/nginx configuration for self-hosted deployment.",
+      "projectType": "Website",
+      "organization": "",
+      "client": "",
+      "industry": "Personal / Web",
+      "status": "active",
+      "duration": {
+        "start": "2025-11",
+        "end": "present"
+      },
+      "repositories": [
+        {
+          "name": "zouriel-portfolio",
+          "url": "https://github.com/Zouriel/zouriel-portfolio",
+          "visibility": "public"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Angular 20 (standalone)",
+          "Tailwind CSS 4",
+          "three.js",
+          "RxJS"
+        ],
+        "backend": [],
+        "database": [],
+        "infrastructure": [
+          "GitHub Pages",
+          "Docker",
+          "nginx",
+          "GitHub Actions"
+        ],
+        "tools": [
+          "PostCSS",
+          "Angular CLI 20"
+        ],
+        "other": []
+      },
+      "role": "Sole developer",
+      "teamSize": 1,
+      "responsibilities": [
+        "Designed and built the portfolio site",
+        "Implemented the WebGL animated background",
+        "Built the contact/submission flow",
+        "Set up GitHub Pages and containerized deployment"
+      ],
+      "myContributions": [
+        "Built a three.js WebGL binary-face animated background",
+        "Implemented a cinematic redesign and responsive/mobile handling",
+        "Built a Telegram and Discord contact/submission bubble with an anonymous/signed drop box",
+        "Set up Docker/nginx production deployment alongside GitHub Pages"
+      ],
+      "majorFeatures": [
+        "Projects showcase page",
+        "WebGL animated background",
+        "Contact/submission bubble",
+        "Military-service page"
+      ],
+      "architecture": [
+        "Angular 20 standalone SPA styled with Tailwind CSS 4",
+        "three.js for the WebGL background",
+        "Served via nginx in Docker for production and GitHub Pages for static hosting"
+      ],
+      "achievements": [],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "https://zouriel.github.io/zouriel-portfolio/",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "high",
+        "uncertainFields": [
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.demo",
+          "links.documentation",
+          "duration.end"
+        ]
+      }
+    },
+    {
+      "name": "Udhares — Flight Management System",
+      "description": "A team-built flight management system for flight scheduling and management with a reporting module, using a Vue.js frontend and a PHP/Laravel backend. My involvement was a minor frontend contribution; the project was led primarily by other developers. It is included as team experience.",
+      "projectType": "Web application",
+      "organization": "Flight-Management-System",
+      "client": "",
+      "industry": "Aviation",
+      "status": "completed",
+      "duration": {
+        "start": "2023-11",
+        "end": "2024-05"
+      },
+      "repositories": [
+        {
+          "name": "Udhares",
+          "url": "https://github.com/Flight-Management-System/Udhares",
+          "visibility": "public"
+        },
+        {
+          "name": "Udhares-API",
+          "url": "https://github.com/Flight-Management-System/Udhares-API",
+          "visibility": "public"
+        },
+        {
+          "name": "Udhares-Reports",
+          "url": "https://github.com/Flight-Management-System/Udhares-Reports",
+          "visibility": "private"
+        }
+      ],
+      "stack": {
+        "frontend": [
+          "Vue.js"
+        ],
+        "backend": [
+          "PHP",
+          "Laravel"
+        ],
+        "database": [],
+        "infrastructure": [],
+        "tools": [],
+        "other": []
+      },
+      "role": "Contributor (minor, frontend)",
+      "teamSize": 4,
+      "responsibilities": [
+        "Contributed minor frontend changes to the flight-scheduling UI"
+      ],
+      "myContributions": [
+        "Added the add-flight entry to the flight-schedule table",
+        "Made minor frontend modifications"
+      ],
+      "majorFeatures": [
+        "Flight scheduling and management",
+        "Reporting module"
+      ],
+      "architecture": [
+        "Vue.js frontend with a PHP/Laravel backend API",
+        "Separate reports module"
+      ],
+      "achievements": [],
+      "metrics": {
+        "users": "",
+        "performance": "",
+        "scale": ""
+      },
+      "links": {
+        "website": "",
+        "demo": "",
+        "documentation": ""
+      },
+      "confidence": {
+        "overall": "medium",
+        "uncertainFields": [
+          "client",
+          "database",
+          "metrics.users",
+          "metrics.performance",
+          "metrics.scale",
+          "links.website",
+          "links.demo",
+          "links.documentation"
+        ]
+      }
+    }
+  ]
+}

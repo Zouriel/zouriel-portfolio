@@ -1,0 +1,13 @@
+.intro-brand {
+  font-size: clamp(2.5rem, 9vw, 5rem);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: var(--ui-color-text);
+}
+
+.intro-sub {
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ui-color-text-muted);
+}

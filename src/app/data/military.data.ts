@@ -1,3 +1,5 @@
+import info from './info.json';
+
 export interface MilitaryCourse {
   title: string;
   org: string;
@@ -21,49 +23,35 @@ export interface MilitaryPageData {
   courses: MilitaryCourse[];
 }
 
+const service = info.militaryService;
+
+const courseGlyphByTitle: Record<string, MilitaryCourse['glyph']> = {
+  'Marine Corps Basic Course': 'corps',
+  'MCMAP — Tan Belt': 'belt',
+  'Rescue Swimming — Bronze': 'medal-bronze',
+  'Rescue Swimming — Silver': 'medal-silver',
+};
+
 export const militaryData: MilitaryPageData = {
-  branch: 'Maldives National Defense Force — Marine Corps',
-  branchShort: 'MNDF Marine Corps',
-  period: 'Mar 2016 — 2022',
-  rank: 'Lance Corporal',
-  rankShort: 'LCpl',
-  qualification: 'Expert',
-  qualificationAwards: 3,
-  bftScore: '280+',
-  bftMax: '300',
-  bftPercent: 93,
-  summary:
-    'Six years in uniform. Trained to operate under load, to lead small teams, to make calm decisions when conditions are not. Carried forward as a habit, not a memory.',
-  pillars: [
-    { word: 'DISCIPLINE', meaning: 'standards held when no one is watching' },
-    { word: 'COMPOSURE', meaning: 'calm under load, clarity in chaos' },
-    { word: 'TEAM', meaning: 'mission before self, peer before mission' },
-    { word: 'EXECUTE', meaning: 'finish what you start, debrief what you finish' },
-  ],
-  courses: [
-    {
-      title: 'Marine Corps Basic Course',
-      org: 'MNDF Marine Corps',
-      glyph: 'corps',
-      detail: 'foundational warfighting · drill · field ops',
-    },
-    {
-      title: 'MCMAP — Tan Belt',
-      org: 'Marine Corps Martial Arts Program',
-      glyph: 'belt',
-      detail: 'fundamental techniques · close combat',
-    },
-    {
-      title: 'Rescue Swimming — Bronze',
-      org: 'MNDF Marine Corps',
-      glyph: 'medal-bronze',
-      detail: 'open-water rescue · survival swim',
-    },
-    {
-      title: 'Rescue Swimming — Silver',
-      org: 'MNDF Marine Corps',
-      glyph: 'medal-silver',
-      detail: 'advanced rescue · towing · endurance',
-    },
-  ],
+  branch: service.branch,
+  branchShort: service.branchShort,
+  period: service.period,
+  rank: service.rank,
+  rankShort: service.rankShort,
+  qualification: service.qualification,
+  qualificationAwards: service.qualificationAwards,
+  bftScore: service.basicFitnessTest.score,
+  bftMax: service.basicFitnessTest.max,
+  bftPercent: service.basicFitnessTest.percent,
+  summary: service.summary,
+  pillars: service.pillars.map((p) => ({
+    word: p.word.toUpperCase(),
+    meaning: p.meaning,
+  })),
+  courses: service.courses.map((c) => ({
+    title: c.title,
+    org: c.org,
+    detail: c.detail,
+    glyph: courseGlyphByTitle[c.title] ?? 'corps',
+  })),
 };

@@ -1,291 +1,175 @@
-import { CommonModule } from '@angular/common';
-import { Component, HostBinding } from '@angular/core';
-import { devPageData, DevPageData, SkillItem } from '../data/development.data';
-import { RevealDirective } from '../directives/reveal.directive';
-import { SectionLabelComponent } from '../components/section-label.component';
+import { Component } from '@angular/core';
+import { UiCard } from 'ui/card';
+import { UiChip, UiBadge } from 'ui/badge';
+import { UiProgressBar } from 'ui/progress';
+import { UiGrid } from 'ui/layout';
+import { UiDivider } from 'ui/divider';
+import { UiSectionLabel, UiReveal, UiMagnetic, UiSplitText } from 'ui/fx';
+
+import { devPageData, Proficiency } from '../data/development.data';
+
+type Tone = 'primary' | 'success' | 'warning' | 'danger';
 
 @Component({
   selector: 'app-development',
   standalone: true,
-  imports: [CommonModule, RevealDirective, SectionLabelComponent],
+  host: { class: 'route-enter' },
+  imports: [
+    UiCard,
+    UiChip,
+    UiBadge,
+    UiProgressBar,
+    UiGrid,
+    UiDivider,
+    UiSectionLabel,
+    UiReveal,
+    UiMagnetic,
+    UiSplitText,
+  ],
   template: `
-    <section class="page">
-      <div class="wrap">
-        <app-section-label index="02" label="stack" />
+    <div class="wrap">
+      <!-- ============ HEADER ============ -->
+      <header class="head">
+        <ui-section-label index="02" label="Stack" />
 
-        <h1 class="title font-display" reveal="up" [revealDelay]="80">
-          <span class="title__primary">{{ data.headline }}</span>
-          <span class="title__accent">{{ data.subhead }}</span>
+        <h1 class="title font-display glow-amber" uiReveal="up" [revealDelay]="60">
+          <span uiSplitText>{{ data.headline }}</span>
+          <span class="accent ui-gradient-text">{{ data.subhead }}</span>
         </h1>
 
-        <p class="intro text-pretty" reveal="up" [revealDelay]="180">
+        <p class="intro text-pretty" uiReveal="blur" [revealDelay]="160">
           {{ data.summary }}
         </p>
+      </header>
 
-        <section class="grid">
+      <!-- ============ SKILL GROUPS ============ -->
+      <section class="groups">
+        <ui-grid min="19rem" [gap]="4">
           @for (group of data.skillGroups; track group.title; let gi = $index) {
-          <div class="block" reveal="up" [revealDelay]="gi * 80">
-            <h3 class="block__h font-mono">
-              <span class="block__num">{{ '0' + (gi + 1) }}</span>
-              {{ group.title }}
-            </h3>
-            <ul class="block__list">
-              @for (s of group.items; track s.name; let si = $index) {
-              <li class="skill" reveal="up" [revealDelay]="gi * 80 + si * 40">
-                <div class="skill__row">
-                  <span class="skill__name">{{ s.name }}</span>
-                  @if (s.note) {
-                  <span class="skill__note">{{ s.note }}</span>
-                  }
-                  <span class="skill__chip" [ngClass]="levelChipClass(s)">
-                    {{ badge(s) }}
-                  </span>
-                </div>
-                <div class="bar">
-                  <div
-                    class="bar__fill"
-                    [ngClass]="levelBarClass(s)"
-                    [style.width.%]="levelPercent(s)"
-                  ></div>
-                </div>
-              </li>
-              }
-            </ul>
-          </div>
+            <ui-card padding="lg" uiReveal="up" [revealDelay]="gi * 80">
+              <div card-header class="ch font-mono">
+                <span class="ch__num">{{ (gi + 1).toString().padStart(2, '0') }}</span>
+                <span class="ch__title">{{ group.title }}</span>
+              </div>
+
+              <ul class="skills">
+                @for (s of group.items; track s.name) {
+                  <li class="skill">
+                    <div class="skill__top">
+                      <span class="skill__name">{{ s.name }}</span>
+                      @if (s.note) {
+                        <span class="skill__note">{{ s.note }}</span>
+                      }
+                      <ui-badge [tone]="levelTone(s.level)">
+                        {{ s.level }}@if (s.years) { · {{ s.years }}y }
+                      </ui-badge>
+                    </div>
+                    <ui-progress-bar
+                      [value]="levelPercent(s.level)"
+                      [tone]="levelTone(s.level)"
+                      [label]="s.name + ' proficiency'"
+                    />
+                  </li>
+                }
+              </ul>
+            </ui-card>
           }
-        </section>
+        </ui-grid>
+      </section>
 
-        <section class="tools" reveal="up">
-          <h3 class="tools__h font-mono">// tooling</h3>
-          <div class="tools__cloud">
-            @for (t of data.tools; track t; let ti = $index) {
-            <span
-              class="tool"
-              reveal="up"
-              [revealDelay]="ti * 50"
-              data-magnetic
-            >
-              {{ t }}
+      <!-- ============ TOOLING ============ -->
+      <section class="tools" uiReveal="up">
+        <ui-divider />
+        <p class="tools__label font-mono">// tooling</p>
+        <div class="tools__cloud">
+          @for (t of data.tools; track t; let ti = $index) {
+            <span uiReveal="up" [revealDelay]="ti * 50">
+              <ui-chip uiMagnetic>{{ t }}</ui-chip>
             </span>
-            }
-          </div>
-        </section>
-      </div>
-    </section>
+          }
+        </div>
+      </section>
+    </div>
   `,
-  styles: [
-    `
-      :host { display: block; }
+  styles: `
+    :host { display: block; }
+    .wrap {
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: clamp(3.5rem, 8vw, 7rem) 1.25rem 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(3rem, 8vw, 6rem);
+    }
 
-      .page {
-        position: relative;
-        min-height: 100vh;
-        padding: 6rem 1.5rem 6rem;
-      }
-      @media (min-width: 768px) {
-        .page { padding: 6rem 4rem; }
-      }
-      .wrap { max-width: 1400px; margin: 0 auto; }
+    /* header */
+    .head { display: flex; flex-direction: column; gap: 1.5rem; }
+    .title {
+      margin: 0.5rem 0 0;
+      font-size: clamp(2.8rem, 10vw, 7rem);
+      line-height: 0.94;
+      letter-spacing: -0.04em;
+      display: flex;
+      flex-direction: column;
+      color: var(--ui-color-text);
+    }
+    .title .accent {
+      font-style: italic;
+      font-size: clamp(1.2rem, 3.5vw, 2.4rem);
+      line-height: 1.05;
+      margin-top: 0.75rem;
+      max-width: 22ch;
+    }
+    .intro {
+      max-width: 52ch;
+      font-size: clamp(1.02rem, 2.4vw, 1.2rem);
+      line-height: 1.65;
+      color: var(--ui-color-text-muted);
+    }
 
-      .title {
-        margin-top: 1.5rem;
-        font-size: clamp(3rem, 10vw, 8rem);
-        font-weight: 700;
-        line-height: 0.92;
-        letter-spacing: -0.04em;
-        text-wrap: balance;
-      }
-      .title__primary { display: block; color: #fff; }
-      .title__accent {
-        display: block;
-        font-style: italic;
-        font-weight: 300;
-        background: linear-gradient(90deg, #d23045 0%, #f59e0b 50%, #fb7185 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-        text-shadow: 0 0 30px rgba(245, 158, 11, .35);
-        font-size: 0.7em;
-      }
-      .intro {
-        margin-top: 1.5rem;
-        max-width: 40rem;
-        font-size: 1.05rem;
-        color: rgba(255, 255, 255, 0.6);
-        line-height: 1.55;
-      }
+    /* skill cards */
+    .ch { display: flex; align-items: baseline; gap: 0.6rem;
+      font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; }
+    .ch__num { color: var(--ui-color-primary); }
+    .ch__title { color: var(--ui-color-text); }
 
-      .grid {
-        margin-top: 4rem;
-        display: grid;
-        gap: 1.25rem;
-      }
-      @media (min-width: 700px) {
-        .grid { grid-template-columns: repeat(2, 1fr); }
-      }
-      @media (min-width: 1100px) {
-        .grid { grid-template-columns: repeat(3, 1fr); }
-      }
-      .block {
-        padding: 1.5rem;
-        border-radius: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(255, 255, 255, 0.025);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-      }
-      .block__h {
-        display: flex;
-        align-items: baseline;
-        gap: 0.6rem;
-        font-size: 11px;
-        letter-spacing: 0.28em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.85);
-      }
-      .block__num { color: #f59e0b; }
-      .block__list {
-        margin-top: 1.25rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.9rem;
-      }
-      .skill__row {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-      }
-      .skill__name {
-        flex: 1;
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 0.95rem;
-      }
-      .skill__note {
-        font-size: 11px;
-        color: rgba(255, 255, 255, 0.4);
-      }
-      .skill__chip {
-        font-size: 10.5px;
-        padding: 0.2rem 0.55rem;
-        border-radius: 9999px;
-        border: 1px solid;
-        font-family: "JetBrains Mono", monospace;
-        white-space: nowrap;
-        letter-spacing: 0.02em;
-      }
-      .bar {
-        margin-top: 0.4rem;
-        height: 2px;
-        background: rgba(255, 255, 255, 0.06);
-        border-radius: 9999px;
-        overflow: hidden;
-      }
-      .bar__fill {
-        height: 100%;
-        border-radius: 9999px;
-        width: 0;
-        animation: growBar 1.4s cubic-bezier(.2,.9,.2,1) both;
-      }
-      @keyframes growBar { from { width: 0; } }
+    .skills { list-style: none; margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: 1.1rem; }
+    .skill { display: flex; flex-direction: column; gap: 0.55rem; }
+    .skill__top { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+    .skill__name { flex: 1 1 auto; font-size: 0.95rem; color: var(--ui-color-text); }
+    .skill__note { font-size: 11px; color: var(--ui-color-text-muted); }
 
-      /* level classes */
-      .lc-expert {
-        background: rgba(16, 185, 129, 0.12);
-        color: #6ee7b7;
-        border-color: rgba(16, 185, 129, 0.3);
-      }
-      .lc-advanced {
-        background: rgba(14, 165, 233, 0.12);
-        color: #93c5fd;
-        border-color: rgba(14, 165, 233, 0.3);
-      }
-      .lc-working {
-        background: rgba(245, 158, 11, 0.12);
-        color: #fcd34d;
-        border-color: rgba(245, 158, 11, 0.3);
-      }
-      .lc-learning {
-        background: rgba(244, 63, 94, 0.12);
-        color: #fda4af;
-        border-color: rgba(244, 63, 94, 0.3);
-      }
-
-      .lb-expert { background: linear-gradient(90deg, #34d399, #14b8a6); }
-      .lb-advanced { background: linear-gradient(90deg, #60a5fa, #818cf8); }
-      .lb-working { background: linear-gradient(90deg, #fbbf24, #fb923c); }
-      .lb-learning { background: linear-gradient(90deg, #fb7185, #f472b6); }
-
-      .tools { margin-top: 4rem; }
-      .tools__h {
-        font-size: 10.5px;
-        letter-spacing: 0.4em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.4);
-      }
-      .tools__cloud {
-        margin-top: 1.5rem;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-      .tool {
-        padding: 0.55rem 1rem;
-        border-radius: 9999px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.03);
-        color: rgba(255, 255, 255, 0.85);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 12px;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      .tool:hover {
-        background: rgba(245, 158, 11, 0.1);
-        border-color: rgba(245, 158, 11, 0.4);
-        color: #fbbf24;
-        transform: translateY(-2px);
-      }
-    `,
-  ],
-  host: { class: 'route-enter block' },
+    /* tooling */
+    .tools { display: flex; flex-direction: column; gap: 1.25rem; }
+    .tools__label {
+      font-size: 10.5px; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--ui-color-text-muted); margin: 0;
+    }
+    .tools__cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tools__cloud > span { display: inline-flex; }
+  `,
 })
 export class DevelopmentPage {
-  @HostBinding('class.block') hostBlock = true;
-  data: DevPageData = devPageData;
+  protected readonly data = devPageData;
 
-  badge(s: SkillItem): string {
-    const yrs = s.years ? ` · ${s.years}y` : '';
-    return `${s.level}${yrs}`;
-  }
-
-  levelPercent(s: SkillItem): number {
-    switch (s.level) {
+  /** Map a proficiency level to a bar fill percentage. */
+  protected levelPercent(level: Proficiency): number {
+    switch (level) {
       case 'Expert': return 96;
       case 'Advanced': return 82;
       case 'Working': return 64;
       case 'Learning': return 40;
-      default: return 60;
     }
   }
 
-  levelChipClass(s: SkillItem) {
-    switch (s.level) {
-      case 'Expert': return 'lc-expert';
-      case 'Advanced': return 'lc-advanced';
-      case 'Working': return 'lc-working';
-      case 'Learning': return 'lc-learning';
-      default: return '';
-    }
-  }
-
-  levelBarClass(s: SkillItem) {
-    switch (s.level) {
-      case 'Expert': return 'lb-expert';
-      case 'Advanced': return 'lb-advanced';
-      case 'Working': return 'lb-working';
-      case 'Learning': return 'lb-learning';
-      default: return '';
+  /** Map a proficiency level to a semantic UI tone. */
+  protected levelTone(level: Proficiency): Tone {
+    switch (level) {
+      case 'Expert': return 'success';
+      case 'Advanced': return 'primary';
+      case 'Working': return 'warning';
+      case 'Learning': return 'danger';
     }
   }
 }

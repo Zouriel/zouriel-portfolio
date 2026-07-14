@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Brand palette + type kept as Tailwind theme tokens so page templates can use
+   utilities like `text-ember` / `font-display`. The library's own design tokens
+   (`--ui-color-*`) come from projects/ui/styles/* and drive every ui-* component;
+   the darkOrange / lightOrange themes re-skin those at runtime via [data-theme]. */
 @theme {
   --color-ink: #0a0608;
   --color-ink-2: #120a0d;
@@ -15,42 +19,52 @@
 
 /* ===== base ===== */
 html, body {
-  background: #0a0608;
-  font-family: var(--font-sans);
+  /* Track the active theme so OS light/dark actually re-paints the page. */
+  background: var(--ui-color-bg, #0a0608);
+  color: var(--ui-color-text, #f4ece4);
+  font-family: var(--ui-font-default, var(--font-sans));
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+html { overflow-x: clip; }
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   cursor: none;
 }
 
-/* Keep body text legible over the binary-face background (the screen-blend
-   shader brightens patches of the page). A faint dark halo costs nothing on
-   solid-dark sections and saves the reading-line where the face peeks through. */
+/* Keep body text legible over the binary-face background (its screen-blend
+   shader brightens patches of the page) in the dark theme. */
 main {
   text-shadow:
     0 0 6px rgba(10, 6, 8, 0.65),
     0 0 1px rgba(10, 6, 8, 0.9);
 }
-main h1,
-main h2,
-main h3,
-main .font-display {
+main h1, main h2, main h3, main .font-display {
   text-shadow: 0 0 14px rgba(10, 6, 8, 0.75);
 }
 
-/* reserve space for the fixed desktop rail so content is pushed aside */
-@media (min-width: 768px) {
-  main {
-    padding-left: 6rem;
-  }
+/* Light theme: the dark legibility halo doesn't belong on a light page. */
+:root[data-theme="lightOrange"] main,
+:root[data-theme="lightOrange"] main h1,
+:root[data-theme="lightOrange"] main h2,
+:root[data-theme="lightOrange"] main h3,
+:root[data-theme="lightOrange"] main .font-display {
+  text-shadow: none;
 }
 
-@media (pointer: coarse) {
-  body { cursor: auto; }
+/* reserve space for the fixed desktop pill rail so content is pushed aside */
+@media (min-width: 768px) {
+  main { padding-left: 6rem; }
+}
+
+@media (pointer: coarse) { body { cursor: auto; } }
+
+/* Mobile home hero: magnetic snap so scrolling settles fully into a frame
+   (proximity — the rest of the site, and other routes, scroll freely). */
+@media (max-width: 760px) {
+  html { scroll-snap-type: y proximity; }
 }
 
 ::selection {
@@ -59,112 +73,20 @@ main .font-display {
 }
 
 a, button { cursor: none; }
-@media (pointer: coarse) {
-  a, button { cursor: pointer; }
-}
+@media (pointer: coarse) { a, button { cursor: pointer; } }
 
 /* ===== display type ===== */
 .font-display {
-  font-family: var(--font-display);
+  font-family: var(--ui-font-display, var(--font-display));
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: -0.03em;
 }
-
-.font-mono { font-family: var(--font-mono); }
+.font-mono { font-family: var(--ui-font-mono, var(--font-mono)); }
 
 .text-balance { text-wrap: balance; }
 .text-pretty  { text-wrap: pretty; }
 
-/* ===== grain ===== */
-.grain::after {
-  content: "";
-  position: fixed;
-  inset: -50%;
-  pointer-events: none;
-  z-index: 9;
-  opacity: 0.06;
-  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.85'/></svg>");
-  mix-blend-mode: overlay;
-  animation: grainShift 8s steps(8) infinite;
-}
-@keyframes grainShift {
-  0%   { transform: translate(0, 0); }
-  20%  { transform: translate(-2%, 1%); }
-  40%  { transform: translate(1%, -2%); }
-  60%  { transform: translate(-1%, 2%); }
-  80%  { transform: translate(2%, -1%); }
-  100% { transform: translate(0, 0); }
-}
-
-/* ===== reveal (intersection observer driven) ===== */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity .9s cubic-bezier(.16, 1, .3, 1),
-    transform .9s cubic-bezier(.16, 1, .3, 1);
-  transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
-}
-[data-reveal="in"] {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-[data-reveal-x] {
-  opacity: 0;
-  transform: translateX(-40px);
-  transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-[data-reveal-x="in"] { opacity: 1; transform: translateX(0); }
-
-[data-reveal-blur] {
-  opacity: 0;
-  filter: blur(18px);
-  transform: translateY(20px);
-  transition: opacity 1s cubic-bezier(.16, 1, .3, 1), filter 1s cubic-bezier(.16, 1, .3, 1), transform 1s cubic-bezier(.16, 1, .3, 1);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-[data-reveal-blur="in"] {
-  opacity: 1;
-  filter: blur(0);
-  transform: translateY(0);
-}
-
-/* ===== chars stagger ===== */
-.char {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(.9em) rotate(8deg);
-  animation: charIn .9s cubic-bezier(.16, 1, .3, 1) both;
-  animation-delay: calc(var(--i, 0) * 35ms + var(--base, 200ms));
-}
-@keyframes charIn {
-  to { opacity: 1; transform: translateY(0) rotate(0); }
-}
-
-/* ===== marquee ===== */
-.marquee {
-  --gap: 3rem;
-  display: flex;
-  gap: var(--gap);
-  overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-.marquee__track {
-  display: flex;
-  gap: var(--gap);
-  animation: marquee var(--marquee-duration, 38s) linear infinite;
-  flex-shrink: 0;
-}
-.marquee:hover .marquee__track { animation-play-state: paused; }
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(calc(-100% - var(--gap))); }
-}
-
-/* ===== glow text utility ===== */
+/* ===== glow text utility (kept; pairs with .ui-gradient-text from fx.css) ===== */
 .glow-amber {
   text-shadow:
     0 0 30px rgba(245, 158, 11, .35),
@@ -172,10 +94,7 @@ a, button { cursor: none; }
 }
 
 /* ===== magnetic underline ===== */
-.link-line {
-  position: relative;
-  display: inline-block;
-}
+.link-line { position: relative; display: inline-block; }
 .link-line::after {
   content: "";
   position: absolute;
@@ -189,12 +108,12 @@ a, button { cursor: none; }
 .link-line:hover::after { transform-origin: left; transform: scaleX(1); }
 
 /* ===== route transition ===== */
-.route-enter {
-  animation: routeIn .65s cubic-bezier(.16, 1, .3, 1) both;
-}
+.route-enter { animation: routeIn .65s cubic-bezier(.16, 1, .3, 1) both; }
 @keyframes routeIn {
   from { opacity: 0; transform: translateY(18px) scale(.998); filter: blur(6px); }
-  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  /* end on transform:none — a lingering identity transform would become a
+     containing block and break the mobile hero's position:sticky pin. */
+  to   { opacity: 1; transform: none; filter: blur(0); }
 }
 
 /* ===== reduced motion ===== */
@@ -207,11 +126,4 @@ a, button { cursor: none; }
   }
   body { cursor: auto; }
   a, button { cursor: pointer; }
-  [data-reveal], [data-reveal-x], [data-reveal-blur] {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-  }
-  .char { opacity: 1; transform: none; }
-  .grain::after { display: none; }
 }

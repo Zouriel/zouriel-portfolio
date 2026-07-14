@@ -1,9 +1,16 @@
-<app-binary-face-background />
-<app-scroll-progress />
-<app-cursor />
+<ui-scroll-progress />
+<ui-cursor />
+<ui-grain [opacity]="0.05" />
 <app-navigation />
 <app-submission-bubble />
-<main class="grain">
+
+<main>
   <router-outlet />
 </main>
-<app-intro-loader />
+
+@if (showIntro()) {
+  <ui-intro-loader [duration]="1500" (done)="endIntro()">
+    <div class="intro-brand font-display">ZOURIEL</div>
+    <div class="intro-sub font-mono">Mohamed Imdaah</div>
+  </ui-intro-loader>
+}

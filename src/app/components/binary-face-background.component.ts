@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -8,35 +7,47 @@ import {
   ViewChild,
 } from '@angular/core';
 
+/**
+ * `app-binary-face` — the signature head, rendered as a field of flickering
+ * 0/1 glyphs (Three.js + a binary post-pass). The original ember-on-dark look,
+ * mounted as an interactive hero element sitting on a dark hero panel.
+ *
+ * - Sizes to its host box (ResizeObserver).
+ * - Looks toward the pointer on desktop / the touch point on mobile.
+ * - An IntersectionObserver releases it to a calm idle and pauses the render
+ *   loop once the hero scrolls out of view.
+ */
 @Component({
-  selector: 'app-binary-face-background',
+  selector: 'app-binary-face',
   standalone: true,
-  imports: [CommonModule],
   template: `
-    <canvas
-      #canvas
-      class="bfbg-canvas"
-      [class.is-ready]="ready"
-      aria-hidden="true"
-    ></canvas>
+    <canvas #canvas class="bfbg-canvas" [class.is-ready]="ready" aria-hidden="true"></canvas>
   `,
   styles: [
     `
-      :host { display: contents; }
+      :host { display: block; position: relative; width: 100%; height: 100%; }
       .bfbg-canvas {
-        position: fixed;
+        position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
-        z-index: 5;
         pointer-events: none;
-        opacity: 0.55;
         mix-blend-mode: screen;
+        opacity: 0;
+        transform: scale(1.06);
+        transition:
+          opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .bfbg-canvas.is-ready { opacity: var(--bf-opacity, 0.95); transform: scale(1); }
+
+      @media (prefers-reduced-motion: reduce) {
+        .bfbg-canvas { transition: opacity 0.4s ease; transform: none; }
       }
     `,
   ],
 })
-export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
+export class BinaryFaceComponent implements AfterViewInit, OnDestroy {
   @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
   ready = false;
@@ -49,7 +60,6 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
 
   async ngAfterViewInit() {
     if (typeof window === 'undefined') return;
-    console.log('[binary-face-bg] component mounted');
 
     const THREE = await import('three');
     const { GLTFLoader } = await import('three/examples/jsm/loaders/GLTFLoader.js');
@@ -71,22 +81,12 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
     GLTFLoaderCtor: typeof import('three/examples/jsm/loaders/GLTFLoader.js').GLTFLoader,
   ) {
     const canvas = this.canvasRef.nativeElement;
+    const host = canvas.parentElement as HTMLElement;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let isMobile = window.matchMedia('(max-width:760px)').matches;
 
-    // Scroll keyframes: morphs left empty so the face stays at neutral bind-pose.
-    // Only the head rotation varies with scroll progress (pitch / yaw / roll).
-    const EXPR = [
-      { name: 'NEUTRAL-1', w: {} as Record<string, number>, head: [0, 0, 0] },
-      { name: 'NEUTRAL-2', w: {} as Record<string, number>, head: [0.05, 0.16, 0] },
-      { name: 'NEUTRAL-3', w: {} as Record<string, number>, head: [0.12, -0.26, 0.06] },
-      { name: 'NEUTRAL-4', w: {} as Record<string, number>, head: [-0.09, 0.08, 0] },
-      { name: 'NEUTRAL-5', w: {} as Record<string, number>, head: [0.02, -0.14, -0.08] },
-    ];
-
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    // r150+ uses outputColorSpace; older builds used outputEncoding. Set whichever exists.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
     const anyRenderer = renderer as unknown as { outputColorSpace?: string; outputEncoding?: number };
     if ('outputColorSpace' in renderer) {
       anyRenderer.outputColorSpace = (THREE as any).SRGBColorSpace;
@@ -97,7 +97,7 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 20);
 
-    /* ---------- binary post-pass: redraw face as 0s and 1s ---------- */
+    /* ---------- binary post-pass: redraw face as 0s and 1s (original look) ---------- */
     const makeGlyphAtlas = () => {
       const s = 64;
       const c = document.createElement('canvas');
@@ -115,7 +115,7 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
       return t;
     };
 
-    let CELL = isMobile ? 9 : 12;
+    let CELL = isMobile ? 8 : 7;
     const rt = new THREE.WebGLRenderTarget(2, 2);
     const postScene = new THREE.Scene();
     const postCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -126,9 +126,6 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
         tGlyph: { value: makeGlyphAtlas() },
         cells: { value: new THREE.Vector2(1, 1) },
         time: { value: 0 },
-        // portfolio-themed ramp: lifted rose -> vivid blood -> ember amber.
-        // Brighter than the reference's slate/blue/amber so the face reads
-        // clearly behind the dark portfolio bg.
         cDim: { value: new THREE.Color('#5a2832') },
         cMid: { value: new THREE.Color('#e63946') },
         cBright: { value: new THREE.Color('#fbbf24') },
@@ -156,9 +153,6 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
         '  float which=mod(step(.5,h)+flick,2.);' +
         '  vec2 guv=vec2((cuv.x+which)*.5,cuv.y);' +
         '  float g=texture2D(tGlyph,guv).r;' +
-        // bias the ramp toward the bright end — most of a lit face sits in the
-        // mid-luminance band, so we want that mapped to vivid blood-red rather
-        // than the deep dim color.
         '  vec3 col=mix(cDim,cMid,smoothstep(.04,.28,lum));' +
         '  col=mix(col,cBright,smoothstep(.32,.72,lum));' +
         '  float glow=smoothstep(.5,1.0,lum)*0.65;' +
@@ -169,7 +163,7 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
     });
     postScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat));
 
-    // lighting tuned for the brightness ramp (push lum higher across the face)
+    // original lighting tuned for the brightness ramp
     const key = new THREE.DirectionalLight(0xffd9a6, 2.4); key.position.set(-1.2, 1.9, 1.4); scene.add(key);
     const fill = new THREE.DirectionalLight(0x9db4ff, 0.7); fill.position.set(1.6, 1.2, 0.9); scene.add(fill);
     const rim = new THREE.DirectionalLight(0xffffff, 1.6); rim.position.set(0.4, 1.8, -1.6); scene.add(rim);
@@ -182,10 +176,15 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
     // r128 ImageBitmapLoader path crashes on iOS Safari with GLB texture blobs.
     try { (self as any).createImageBitmap = undefined; } catch {}
 
-    // Initial sizing so renderer has a viewport before model parse (resize() also
-    // recomputes once the model is in scene).
-    const initResize = () => {
-      const w = window.innerWidth, h = window.innerHeight;
+    /* ---------- host-relative sizing ---------- */
+    const hostSize = () => {
+      const r = host.getBoundingClientRect();
+      return { w: Math.max(1, Math.round(r.width)), h: Math.max(1, Math.round(r.height)) };
+    };
+    const applySize = () => {
+      isMobile = window.matchMedia('(max-width:760px)').matches;
+      CELL = isMobile ? 8 : 7;
+      const { w, h } = hostSize();
       renderer.setSize(w, h, false);
       const cx = Math.ceil(w / CELL), cy = Math.ceil(h / CELL);
       rt.setSize(cx, cy);
@@ -193,14 +192,12 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
     };
-    initResize();
+    applySize();
 
-    console.log('[binary-face-bg] fetching /face.glb');
     const buffer = await fetch('/face.glb').then((r) => {
       if (!r.ok) throw new Error('face.glb HTTP ' + r.status);
       return r.arrayBuffer();
     });
-    console.log('[binary-face-bg] loaded', buffer.byteLength, 'bytes');
     if (this.destroyed) return;
 
     await new Promise<void>((resolve, reject) => {
@@ -225,167 +222,142 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
             root.updateMatrixWorld(true);
             headBone.getWorldPosition(headPos);
           }
-          console.log('[binary-face-bg] parsed model — head bone:', !!headBone, 'morph meshes:', morphMeshes.length);
           resolve();
         },
         (err: unknown) => reject(err),
       );
     }).catch((err) => {
-      console.error('[binary-face-bg] model load failed', err);
+      console.error('[binary-face] model load failed', err);
       throw err;
     });
 
     if (this.destroyed) return;
 
+    /* ---------- camera framing ---------- */
     const camBase = new THREE.Vector3(0, 1.6, 0.6);
     const lookTarget = new THREE.Vector3(0, 1.6, 0);
     const frameCamera = () => {
-      // Background framing: centered slightly above visual centre, a touch farther
-      // back than the reference (face reads as ambient rather than dominant).
-      const lookX = headPos.x;
-      const lookY = isMobile ? headPos.y - 0.05 : headPos.y - 0.02;
-      camBase.set(headPos.x, headPos.y + 0.04, headPos.z + (isMobile ? 0.85 : 0.78));
-      lookTarget.set(lookX, lookY, headPos.z);
+      const dist = isMobile ? 1.02 : 0.76;
+      camBase.set(headPos.x, headPos.y + 0.06, headPos.z + dist);
+      lookTarget.set(headPos.x, headPos.y + 0.02, headPos.z);
       camera.position.copy(camBase);
       camera.lookAt(lookTarget.x, lookTarget.y, lookTarget.z);
     };
 
-    const resize = () => {
-      isMobile = window.matchMedia('(max-width:760px)').matches;
-      CELL = isMobile ? 9 : 12;
-      const w = window.innerWidth, h = window.innerHeight;
-      renderer.setSize(w, h, false);
-      const cx = Math.ceil(w / CELL), cy = Math.ceil(h / CELL);
-      rt.setSize(cx, cy);
-      postMat.uniforms['cells'].value.set(cx, cy);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      frameCamera();
-    };
+    const resize = () => { applySize(); frameCamera(); };
+    const ro = new ResizeObserver(() => resize());
+    ro.observe(host);
+    this.disposers.push(() => ro.disconnect());
     window.addEventListener('resize', resize);
     this.disposers.push(() => window.removeEventListener('resize', resize));
     resize();
 
-    // animation state
-    const current: Record<string, number> = {};
-    const headCur = [0, 0, 0];
-    let px = 0, py = 0;
-    let pxT = 0, pyT = 0;
-    let idleT = 0;
-    let autoCur = 1; // smoothed autonomous-vs-cursor blend (1=auto, 0=cursor)
-    let blink = 0, nextBlink = 1.6;
-    let scrollT = 0, scrollTarget = 0;
+    /* ---------- interaction: look toward pointer / touch, gated by visibility ---------- */
+    let lxT = 0, lyT = 0;
+    let lx = 0, ly = 0;
+    let idleT = 5;
+    let followRate = 5;
+    let visible = true;
 
-    const onScroll = () => {
-      const m = document.documentElement.scrollHeight - window.innerHeight;
-      scrollTarget = m > 0 ? window.scrollY / m : 0;
+    const clamp = (v: number, m: number) => Math.max(-m, Math.min(m, v));
+    const aim = (clientX: number, clientY: number, snappy: boolean) => {
+      if (!visible) return;
+      const r = canvas.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height * 0.42;
+      lxT = clamp((clientX - cx) / (r.width * 0.55), 1.4);
+      lyT = clamp((clientY - cy) / (r.height * 0.55), 1.4);
+      idleT = 0;
+      followRate = snappy ? 13 : 5.5;
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    this.disposers.push(() => window.removeEventListener('scroll', onScroll));
-    onScroll();
 
-    if (!reduceMotion && !isMobile) {
-      const onPointerMove = (e: PointerEvent) => {
-        pxT = (e.clientX / window.innerWidth) * 2 - 1;
-        pyT = (e.clientY / window.innerHeight) * 2 - 1;
-        idleT = 0;
-      };
-      const onPointerLeave = () => { idleT = 99; };
+    if (!reduceMotion) {
+      const onPointerMove = (e: PointerEvent) => aim(e.clientX, e.clientY, e.pointerType === 'touch');
+      const onPointerDown = (e: PointerEvent) => aim(e.clientX, e.clientY, e.pointerType === 'touch');
       window.addEventListener('pointermove', onPointerMove, { passive: true });
-      window.addEventListener('pointerleave', onPointerLeave, { passive: true });
+      window.addEventListener('pointerdown', onPointerDown, { passive: true });
       this.disposers.push(() => window.removeEventListener('pointermove', onPointerMove));
-      this.disposers.push(() => window.removeEventListener('pointerleave', onPointerLeave));
+      this.disposers.push(() => window.removeEventListener('pointerdown', onPointerDown));
     }
 
-    // pause when tab hidden
     let paused = false;
-    const onVisibility = () => { paused = document.hidden; };
+    const io = new IntersectionObserver(
+      (entries) => {
+        visible = entries[0].isIntersecting;
+        if (visible && !paused && !this.rafId) animate();
+      },
+      { threshold: 0.05 },
+    );
+    io.observe(host);
+    this.disposers.push(() => io.disconnect());
+
+    const onVisibility = () => { paused = document.hidden; if (!paused && visible && !this.rafId) animate(); };
     document.addEventListener('visibilitychange', onVisibility);
     this.disposers.push(() => document.removeEventListener('visibilitychange', onVisibility));
 
+    /* ---------- animation ---------- */
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    const smooth = (t: number) => t * t * (3 - 2 * t);
     const damp = (cur: number, tgt: number, rate: number, dt: number) =>
       lerp(cur, tgt, 1 - Math.exp(-rate * dt));
 
-    const targetState = () => {
-      const f = scrollT * (EXPR.length - 1);
-      const i = Math.min(Math.floor(f), EXPR.length - 2);
-      const t = smooth(Math.min(Math.max(f - i, 0), 1));
-      const A = EXPR[i], B = EXPR[i + 1];
-      const out: Record<string, number> = {};
-      for (const k in A.w) out[k] = lerp(A.w[k], B.w[k] || 0, t);
-      for (const k in B.w) if (!(k in out)) out[k] = lerp(0, B.w[k], t);
-      const head = [
-        lerp(A.head[0], B.head[0], t),
-        lerp(A.head[1], B.head[1], t),
-        lerp(A.head[2], B.head[2], t),
-      ];
-      return { w: out, head };
-    };
-
+    const headCur = [0, 0, 0];
+    let blink = 0, nextBlink = 1.6;
+    let saccade = 0, nextSaccade = 2.2;
+    let sacX = 0, sacY = 0;
     const clock = new THREE.Clock();
     const eu = new THREE.Euler();
     const q = new THREE.Quaternion();
 
     this.ready = true;
-    // mark ready outside zone won't trigger CD; flip class manually
     canvas.classList.add('is-ready');
 
     const animate = () => {
       if (this.destroyed) return;
+      if (paused || !visible) { this.rafId = 0; return; }
       this.rafId = requestAnimationFrame(animate);
-      if (paused) return;
 
       const dt = Math.min(clock.getDelta(), 0.05);
       const t = clock.elapsedTime;
 
-      scrollT = damp(scrollT, scrollTarget, 6, dt);
-
       idleT += dt;
-      // smooth the autonomous-vs-cursor blend so the eyes don't snap when the
-      // pointer enters/leaves; targets 0 while cursor is fresh, 1 once it's idle
-      const autoTarget = Math.min(idleT / 2.4, 1);
-      autoCur = damp(autoCur, autoTarget, 2.2, dt);
-      const ax = Math.sin(t * 0.42) * 0.5 + Math.sin(t * 0.17) * 0.32;
-      const ay = Math.cos(t * 0.31) * 0.42;
-      const wantX = lerp(pxT, ax, autoCur);
-      const wantY = lerp(pyT, ay, autoCur);
-      px = damp(px, wantX, 4.2, dt);
-      py = damp(py, wantY, 4.2, dt);
+      const auto = Math.min(idleT / 2.4, 1);
 
-      const tgt = targetState();
+      nextSaccade -= dt;
+      if (nextSaccade <= 0) {
+        sacX = (Math.random() * 2 - 1) * 0.5;
+        sacY = (Math.random() * 2 - 1) * 0.3;
+        saccade = 1;
+        nextSaccade = 2.4 + Math.random() * 3.2;
+      }
+      saccade = Math.max(0, saccade - dt * 1.6);
+      const ax = Math.sin(t * 0.4) * 0.3 + Math.sin(t * 0.16 + 1.3) * 0.18 + sacX * saccade * 0.7;
+      const ay = Math.cos(t * 0.29) * 0.22 + sacY * saccade * 0.7;
+
+      const wantX = lerp(lxT, ax, auto);
+      const wantY = lerp(lyT, ay, auto);
+      lx = damp(lx, wantX, followRate, dt);
+      ly = damp(ly, wantY, followRate, dt);
 
       nextBlink -= dt;
       if (nextBlink <= 0) { blink = 1; nextBlink = 2.6 + Math.random() * 3.6; }
       if (blink > 0) blink = Math.max(0, blink - dt * 6.5);
       const blinkW = Math.sin(Math.min(blink, 1) * Math.PI);
 
-      const keys: Record<string, true> = {};
-      for (const k in tgt.w) keys[k] = true;
-      for (const k in current) keys[k] = true;
-      for (const k in keys) {
-        let want = tgt.w[k] || 0;
-        if (k === 'eyeBlinkLeft' || k === 'eyeBlinkRight') want = Math.max(want, blinkW);
-        current[k] = damp(current[k] || 0, want, 10, dt);
-        if (current[k] < 0.001) delete current[k];
-      }
       morphMeshes.forEach((m) => {
         const d = m.morphTargetDictionary;
         const inf = m.morphTargetInfluences;
-        for (const name in d) inf[d[name]] = current[name] || 0;
+        for (const name in d) inf[d[name]] = 0;
         if (blinkW > 0) {
-          if ('eyeBlinkLeft' in d) inf[d.eyeBlinkLeft] = Math.max(inf[d.eyeBlinkLeft], blinkW);
-          if ('eyeBlinkRight' in d) inf[d.eyeBlinkRight] = Math.max(inf[d.eyeBlinkRight], blinkW);
+          if ('eyeBlinkLeft' in d) inf[d.eyeBlinkLeft] = blinkW;
+          if ('eyeBlinkRight' in d) inf[d.eyeBlinkRight] = blinkW;
         }
       });
 
-      const leanX = reduceMotion ? 0 : py * 0.035;
-      const leanY = reduceMotion ? 0 : px * 0.09;
-      const idleSway = reduceMotion ? 0 : Math.sin(t * 0.55) * 0.008;
-      headCur[0] = damp(headCur[0], tgt.head[0] + leanX, 4.5, dt);
-      headCur[1] = damp(headCur[1], tgt.head[1] + leanY, 4.5, dt);
-      headCur[2] = damp(headCur[2], tgt.head[2] + idleSway, 4.5, dt);
+      const sway = Math.sin(t * 0.5) * 0.01;
+      const nod = Math.sin(t * 0.7 + 0.6) * 0.006;
+      headCur[0] = damp(headCur[0], ly * 0.16 + nod, 4.5, dt);
+      headCur[1] = damp(headCur[1], lx * 0.26 + sway, 4.5, dt);
+      headCur[2] = damp(headCur[2], lx * 0.05, 4.5, dt);
       if (headBone) {
         eu.set(headCur[0] * 0.7, headCur[1] * 0.7, headCur[2]);
         q.setFromEuler(eu);
@@ -397,8 +369,8 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
         neckBone.quaternion.copy(neckBone.userData.q0).multiply(q);
       }
 
-      const ex = reduceMotion ? 0 : -py * 0.16;
-      const ey = reduceMotion ? 0 : px * 0.26;
+      const ex = -ly * 0.2;
+      const ey = lx * 0.32;
       [eyeL, eyeR].forEach((b) => {
         if (!b || !b.userData.q0) return;
         eu.set(ex, ey, 0);
@@ -406,13 +378,11 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
         b.quaternion.copy(b.userData.q0).multiply(q);
       });
 
-      if (!reduceMotion) {
-        const cx = camBase.x + px * 0.03;
-        const cy = camBase.y - py * 0.02;
-        camera.position.x = damp(camera.position.x, cx, 3, dt);
-        camera.position.y = damp(camera.position.y, cy, 3, dt);
-        camera.lookAt(lookTarget.x, lookTarget.y, lookTarget.z);
-      }
+      const cx = camBase.x + lx * 0.04;
+      const cy = camBase.y - ly * 0.03;
+      camera.position.x = damp(camera.position.x, cx, 3, dt);
+      camera.position.y = damp(camera.position.y, cy, 3, dt);
+      camera.lookAt(lookTarget.x, lookTarget.y, lookTarget.z);
 
       postMat.uniforms['time'].value = t;
       renderer.setRenderTarget(rt);
@@ -421,9 +391,9 @@ export class BinaryFaceBackgroundComponent implements AfterViewInit, OnDestroy {
       renderer.setRenderTarget(null);
       renderer.render(postScene, postCam);
     };
+    clock.start();
     animate();
 
-    // dispose GL resources when destroyed
     this.disposers.push(() => {
       rt.dispose();
       postMat.dispose();

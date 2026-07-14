@@ -1,3 +1,5 @@
+import info from './info.json';
+
 export type EducationItem = {
   degree: string; // e.g., BSc (Hons) in Computer Science – First Class
   institution: string; // e.g., UWE Bristol (via Villa College)
@@ -25,118 +27,69 @@ export type EducationPageData = {
   certifications: CertificateItem[];
 };
 
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+// Turns "YYYY" into itself and "YYYY-MM" into "Mon YYYY". Empty -> "".
+function formatDatePart(value: string): string {
+  if (!value) return '';
+  const match = /^(\d{4})-(\d{2})$/.exec(value);
+  if (match) {
+    const year = match[1];
+    const monthIndex = Number(match[2]) - 1;
+    const month = MONTHS[monthIndex];
+    if (month) return `${month} ${year}`;
+  }
+  return value;
+}
+
+// Builds a period string from a start and end value, e.g. "2022 — Sep 2025".
+function formatPeriod(startYear: string, endDate: string): string {
+  const start = formatDatePart(startYear);
+  const end = formatDatePart(endDate);
+  if (!start && !end) return '—';
+  if (start && end) return `${start} — ${end}`;
+  return start || end;
+}
+
+// Certificate dates: "YYYY-MM" -> "Mon YYYY"; leaves "" and "Active" as-is.
+function formatCertDate(value: string): string {
+  return formatDatePart(value);
+}
+
 export const educationPageData: EducationPageData = {
   headline: 'Education',
-  subhead: 'Computer Science · Technical Foundations · Operational Training',
+  subhead: info.taglines.education,
   summary:
     'Formal study paired with hands-on, mission-ready training. A developer with a field-tested mindset—precise under pressure, methodical by habit.',
 
-  education: [
-    {
-      degree: 'BSc (Hons) Computer Science — First Class Honours',
-      institution:
-        'University of the West of England (UWE Bristol), via Villa College',
-      location: 'Malé, Maldives',
-      period: '2022 — Sep 2025',
-      result: 'First Class Honours',
-      highlights: [
-        'Delivered industry-oriented projects with clean code and reproducible builds.',
-        'Focused on full-stack engineering (.NET, Angular, PostgreSQL), architecture, and testing.',
-      ],
-      coursework: [
-        'Advanced Software Development',
-        'Group Software Development Project',
-        'Databases & SQL',
-        'Networks & Security',
-        'Algorithms & Data Structures',
-      ],
-    },
-    {
-      degree: 'Diploma in Computer Science',
-      institution: 'Villa College / UWE Bristol',
-      location: 'Malé, Maldives',
-      period: '2022 — 2023',
-      highlights: [
-        'Core CS fundamentals, program design, and web development foundations.',
-      ],
-    },
-    {
-      degree: 'Certificate Level 3 in Information Technology',
-      institution: 'CYRYX College',
-      location: 'Malé, Maldives',
-      period: 'Jan 2012 — Jun 2012',
-      highlights: ['IT operations, systems use, and practical tooling.'],
-    },
-    {
-      degree: 'Secondary Education (Grades 7–10)',
-      institution: 'Islamic Arabic School',
-      location: 'Malé, Maldives',
-      period: '2009 — 2012',
-    },
-    {
-      degree: 'Primary Education (Grades 1–6)',
-      institution: 'Madrassath Saʻd bin Ubaadh',
-      location: 'Madinah, Saudi Arabia',
-      period: '—',
-    },
-  ],
+  education: info.education.map(
+    (item): EducationItem => ({
+      degree: item.qualification,
+      institution: item.institution,
+      location: item.location,
+      period: formatPeriod(item.startYear, item.endDate),
+      result: item.result || undefined,
+      coursework: (item as { coursework?: string[] }).coursework || undefined,
+    }),
+  ),
 
-  certifications: [
-    {
-      title: 'Basic Seamanship Training',
-      issuer: 'Ministry of Transport & Shipping',
-      location: 'Maldives',
-      date: 'Jun 1994',
-      notes: [
-        'Knots & splices, collision prevention, lifeboats & liferafts',
-        'Firefighting, survival at sea, first aid',
-        'Basic engine room equipment & fittings',
-      ],
-      category: 'Training',
-    },
-    {
-      title: 'Diesel Engine Repair & Maintenance',
-      issuer: 'Airport Training — Hanimadhoo',
-      location: 'Maldives',
-      date: 'Nov 1998',
-      category: 'Training',
-    },
-    {
-      title: 'Airport Emergency Exercise',
-      issuer: 'Kaadehdhoo Airport',
-      location: 'Maldives',
-      date: 'Mar 1999',
-      category: 'Training',
-    },
-    {
-      title: 'Global Reporting Format (GRF) Training',
-      issuer: 'Kaadehdhoo Airport',
-      date: 'Jun 2021',
-      category: 'Training',
-    },
-    {
-      title: 'Marine Corps Basic Course; MCMAP (tan belt)',
-      issuer: 'Maldives National Defense Force',
-      date: '—',
-      category: 'Training',
-    },
-    {
-      title: 'Rescue Swimming – Bronze & Silver',
-      issuer: 'Maldives National Defense Force',
-      date: '—',
-      category: 'Training',
-    },
-    {
-      title: 'Management Skills Training',
-      issuer: 'Villa College — Corporate Training Division',
-      date: 'Jun 20–21 (year per your record)',
-      category: 'Training',
-    },
-    {
-      title: 'Driver’s Licenses (A1, A0, B3, B4B1)',
-      issuer: '—',
-      date: 'Active',
-      category: 'License',
-    },
-  ],
+  certifications: info.certifications.map((item) => ({
+    title: item.title,
+    issuer: item.issuer,
+    date: formatCertDate(item.date),
+    category: item.category,
+  })) as CertificateItem[],
 };

@@ -18,13 +18,26 @@ export type SocialLinks = Partial<Record<Network, string>>;
   selector: 'app-social-links',
   standalone: true,
   imports: [CommonModule],
+  styles: [
+    `
+      /* Defaults: dark chip (reads on a light page). Override --sl-* on a
+         dark surface to flip to a raised chip that reads on dark. */
+      :host {
+        --sl-bg: #0a0608;
+        --sl-bd: rgba(244, 236, 228, 0.13);
+        --sl-fg: rgba(244, 236, 228, 0.75);
+        --sl-bgh: #1a1014;
+        --sl-fgh: #ffffff;
+      }
+    `,
+  ],
   template: `
     <div class="flex flex-wrap gap-3">
       @for (item of ordered(); track item.key) {
       <a
-        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl
-                 border border-white/15 bg-white/5 text-white/80
-                 hover:bg-white/10 hover:text-white transition"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border transition
+                 border-[color:var(--sl-bd)] bg-[var(--sl-bg)] text-[color:var(--sl-fg)]
+                 hover:bg-[var(--sl-bgh)] hover:text-[color:var(--sl-fgh)]"
         [href]="item.href"
         target="_blank"
         rel="noopener noreferrer"
