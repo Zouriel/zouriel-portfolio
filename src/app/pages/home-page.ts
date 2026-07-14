@@ -101,7 +101,7 @@ import { workExperienceData } from '../data/work-experience.data';
               <div class="showcase">
                 <div class="showcase__row">
                   <div class="showcase__label font-mono">// what I've built</div>
-                  <ui-drift-row [speed]="26" gap="1rem">
+                  <ui-drift-row [speed]="26" gap="1rem" [interactive]="false">
                     @for (p of driftProjects; track p.name; let i = $index) {
                       <a class="dcard" [href]="p.live || null" [attr.target]="p.live ? '_blank' : null"
                          rel="noopener noreferrer" [style.--accent]="driftAccent(i)">
@@ -120,7 +120,7 @@ import { workExperienceData } from '../data/work-experience.data';
 
                 <div class="showcase__row">
                   <div class="showcase__label font-mono">// where I've worked</div>
-                  <ui-drift-row [speed]="22" direction="left" gap="1rem">
+                  <ui-drift-row [speed]="22" direction="left" gap="1rem" [interactive]="false">
                     @for (w of driftWork; track w.org + w.role) {
                       <article class="dcard dcard--work">
                         <div class="dcard__top font-mono">

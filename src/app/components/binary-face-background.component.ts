@@ -278,6 +278,17 @@ export class BinaryFaceComponent implements AfterViewInit, OnDestroy {
       window.addEventListener('pointerdown', onPointerDown, { passive: true });
       this.disposers.push(() => window.removeEventListener('pointermove', onPointerMove));
       this.disposers.push(() => window.removeEventListener('pointerdown', onPointerDown));
+
+      // iOS Safari doesn't fire pointer events reliably during touch — use the
+      // native Touch events too so "look where I touch" works on iPhone.
+      const onTouch = (e: TouchEvent) => {
+        const t = e.touches[0] ?? e.changedTouches[0];
+        if (t) aim(t.clientX, t.clientY, true);
+      };
+      window.addEventListener('touchstart', onTouch, { passive: true });
+      window.addEventListener('touchmove', onTouch, { passive: true });
+      this.disposers.push(() => window.removeEventListener('touchstart', onTouch));
+      this.disposers.push(() => window.removeEventListener('touchmove', onTouch));
     }
 
     let paused = false;
