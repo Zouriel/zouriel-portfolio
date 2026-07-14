@@ -422,7 +422,13 @@
   },
   "certifications": [
     {
-      "title": "Marine Corps Basic Course; MCMAP (Tan Belt)",
+      "title": "Marine Corps Basic Course",
+      "issuer": "Maldives National Defence Force",
+      "date": "",
+      "category": "Training"
+    },
+    {
+      "title": "Marine Corps Martial Arts Program — Tan Belt",
       "issuer": "Maldives National Defence Force",
       "date": "",
       "category": "Training"
@@ -431,12 +437,6 @@
       "title": "Rescue Swimming — Bronze & Silver",
       "issuer": "Maldives National Defence Force",
       "date": "",
-      "category": "Training"
-    },
-    {
-      "title": "Global Reporting Format (GRF) Training",
-      "issuer": "Kaadehdhoo Airport",
-      "date": "2021-06",
       "category": "Training"
     },
     {
