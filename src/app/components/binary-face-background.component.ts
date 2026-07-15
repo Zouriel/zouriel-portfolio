@@ -155,8 +155,8 @@ export class BinaryFaceComponent implements AfterViewInit, OnDestroy {
         '  float g=texture2D(tGlyph,guv).r;' +
         '  vec3 col=mix(cDim,cMid,smoothstep(.04,.28,lum));' +
         '  col=mix(col,cBright,smoothstep(.32,.72,lum));' +
-        '  float glow=smoothstep(.5,1.0,lum)*0.65;' +
-        '  vec3 outc=col*(1.1+0.4*g)+glow*g;' +
+        '  float glow=smoothstep(.5,1.0,lum)*0.85;' +
+        '  vec3 outc=col*(1.3+0.45*g)+glow*g;' +
         '  float vig=smoothstep(1.15,0.35,length(vUv-0.5));' +
         '  gl_FragColor=vec4(outc, g*vis*mix(0.82,1.0,vig));' +
         '}',
@@ -164,7 +164,7 @@ export class BinaryFaceComponent implements AfterViewInit, OnDestroy {
     postScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat));
 
     // original lighting tuned for the brightness ramp
-    const key = new THREE.DirectionalLight(0xffd9a6, 2.4); key.position.set(-1.2, 1.9, 1.4); scene.add(key);
+    const key = new THREE.DirectionalLight(0xffd9a6, 2.8); key.position.set(-1.2, 1.9, 1.4); scene.add(key);
     const fill = new THREE.DirectionalLight(0x9db4ff, 0.7); fill.position.set(1.6, 1.2, 0.9); scene.add(fill);
     const rim = new THREE.DirectionalLight(0xffffff, 1.6); rim.position.set(0.4, 1.8, -1.6); scene.add(rim);
     scene.add(new THREE.HemisphereLight(0x6a4a55, 0x14161c, 0.7));
