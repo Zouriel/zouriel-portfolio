@@ -61,11 +61,11 @@ type Tone = 'primary' | 'success' | 'warning' | 'danger';
                         <span class="skill__note">{{ s.note }}</span>
                       }
                       <ui-badge [tone]="levelTone(s.level)">
-                        {{ s.level }}@if (s.years) { · {{ s.years }}y }
+                        {{ s.level }} · {{ s.score }}/10
                       </ui-badge>
                     </div>
                     <ui-progress-bar
-                      [value]="levelPercent(s.level)"
+                      [value]="s.score * 10"
                       [tone]="levelTone(s.level)"
                       [label]="s.name + ' proficiency'"
                     />
@@ -152,16 +152,6 @@ type Tone = 'primary' | 'success' | 'warning' | 'danger';
 })
 export class DevelopmentPage {
   protected readonly data = devPageData;
-
-  /** Map a proficiency level to a bar fill percentage. */
-  protected levelPercent(level: Proficiency): number {
-    switch (level) {
-      case 'Expert': return 96;
-      case 'Advanced': return 82;
-      case 'Working': return 64;
-      case 'Learning': return 40;
-    }
-  }
 
   /** Map a proficiency level to a semantic UI tone. */
   protected levelTone(level: Proficiency): Tone {
